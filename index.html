@@ -34,33 +34,33 @@
       .header-banner {
         background: linear-gradient(135deg, #1d3557 0%, #457b9d 100%);
         color: white;
-        padding: 10px 0;
+        padding: 8px 0;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       }
       .card-custom {
         border: none;
-        border-radius: 12px;
+        border-radius: 10px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         background: white;
       }
       #schedule-table-container {
         background: white;
-        padding: 12px;
-        border-radius: 8px;
+        padding: 10px 12px;
+        border-radius: 6px;
       }
       .table-schedule {
         border-collapse: collapse;
         width: 100%;
         table-layout: fixed;
       }
-      /* Super Compact Table Cell Specs */
+      /* Ultra-Compact Layout for A4 Single Page Fit */
       .table-schedule th,
       .table-schedule td {
-        border: 1px solid #222;
-        padding: 3px 5px !important;
+        border: 1px solid #111;
+        padding: 2px 4px !important;
         vertical-align: middle;
-        font-size: 12.5px;
-        line-height: 1.15 !important;
+        font-size: 11.5px;
+        line-height: 1.1 !important;
         word-break: break-word;
         white-space: pre-wrap;
       }
@@ -69,65 +69,71 @@
         text-align: center;
         font-weight: 700;
         color: #1d3557;
-        padding: 5px !important;
+        padding: 4px 2px !important;
       }
       .exec-name {
         font-weight: 700;
         color: #0d1b2a;
-        font-size: 12.5px;
-        line-height: 1.1;
+        font-size: 11.5px;
+        line-height: 1.05;
       }
       .exec-pos {
-        font-size: 11px;
+        font-size: 10px;
         color: #415a77;
-        line-height: 1.1;
+        line-height: 1.05;
       }
 
       .leave-table-header {
         background-color: #fff3cd;
         color: #856404;
         font-weight: bold;
-        padding: 4px;
-        font-size: 12px;
-        border: 1px solid #222;
+        padding: 3px;
+        font-size: 11px;
+        border: 1px solid #111;
         border-bottom: none;
       }
       .leave-badge {
         background-color: #ffe5ec;
         color: #d90429;
         font-weight: bold;
-        padding: 1px 5px;
-        border-radius: 4px;
+        padding: 0px 4px;
+        border-radius: 3px;
         display: inline-block;
-        font-size: 11.5px;
+        font-size: 10.5px;
       }
       .joint-exec-badge {
-        font-size: 10.5px;
+        font-size: 9.5px;
         background-color: #e0f2fe;
         color: #0369a1;
         border: 1px solid #bae6fd;
-        padding: 1px 4px;
-        border-radius: 3px;
+        padding: 0px 3px;
+        border-radius: 2px;
         margin-top: 1px;
         display: inline-block;
-        line-height: 1.1;
+        line-height: 1.05;
       }
-      .table-footer-info {
-        font-size: 11px;
-        color: #555;
+      .table-footer-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 6px;
+        padding-top: 4px;
+        border-top: 1px solid #ddd;
+        font-size: 10px;
+        color: #444;
         font-weight: 600;
       }
       .table-dev-credit {
-        font-size: 9.5px;
-        color: #777;
-        opacity: 0.45;
-        letter-spacing: 0.3px;
+        font-size: 9px;
+        color: #666;
+        opacity: 0.7;
+        text-align: center;
       }
       .btn-mobile-touch {
-        padding: 5px 10px;
+        padding: 4px 8px;
         font-weight: 600;
-        border-radius: 6px;
-        font-size: 12.5px;
+        border-radius: 5px;
+        font-size: 12px;
       }
     </style>
   </head>
@@ -136,15 +142,15 @@
     <div class="header-banner mb-2">
       <div class="container d-flex justify-content-between align-items-center">
         <div>
-          <h5 class="mb-0 fw-bold">
+          <h6 class="mb-0 fw-bold">
             <i class="fa-solid fa-calendar-days me-2"></i
             >ตารางงานประจำวันผู้บริหาร
-          </h5>
-          <small class="text-light">สสจ.ลพบุรี (ตารางงานวันถัดไป)</small>
+          </h6>
+          <small class="text-light" style="font-size: 11px">สสจ.ลพบุรี</small>
         </div>
         <div>
           <button
-            class="btn btn-outline-light btn-sm fw-bold"
+            class="btn btn-outline-light btn-sm fw-bold py-0"
             onclick="openAdminLoginModal()"
           >
             <i class="fa-solid fa-user-gear"></i> Admin
@@ -153,14 +159,13 @@
       </div>
     </div>
 
-    <div class="container mb-4 px-2 px-md-3">
+    <div class="container mb-3 px-1 px-md-3">
       <!-- Controls Card -->
       <div class="card card-custom p-2 mb-2">
         <div class="row g-2 align-items-center">
           <div class="col-md-3">
-            <label class="form-label fw-bold mb-1 small"
-              ><i class="fa-regular fa-calendar-check me-1"></i>
-              เลือกวันที่บันทึก:</label
+            <label class="form-label fw-bold mb-0 small"
+              ><i class="fa-regular fa-calendar-check me-1"></i> วันที่:</label
             >
             <input
               type="date"
@@ -170,7 +175,7 @@
             />
           </div>
           <div class="col-md-9 pt-1 pt-md-0">
-            <div class="d-flex flex-wrap gap-2">
+            <div class="d-flex flex-wrap gap-1">
               <button
                 class="btn btn-primary btn-mobile-touch"
                 onclick="openAddEventModal()"
@@ -193,22 +198,25 @@
                 class="btn btn-outline-danger btn-mobile-touch"
                 onclick="exportPDF()"
               >
-                <i class="fa-solid fa-file-pdf me-1"></i> PDF (A4 แนวตั้ง)
+                <i class="fa-solid fa-file-pdf me-1"></i> PDF (A4 พอดี 1 หน้า)
               </button>
             </div>
           </div>
         </div>
 
         <!-- Exec Filter Row -->
-        <div class="row mt-2 pt-1 border-top">
+        <div class="row mt-1 pt-1 border-top">
           <div class="col-12">
-            <label class="form-label fw-bold small text-muted mb-1"
-              ><i class="fa-solid fa-filter me-1"></i>
-              กรองดูภารกิจเฉพาะผู้บริหาร / งานที่ไปร่วมกัน:</label
+            <label
+              class="form-label fw-bold small text-muted mb-0"
+              style="font-size: 11px"
+              ><i class="fa-solid fa-filter me-1"></i> กรองดูผู้บริหาร /
+              งานที่ไปร่วมกัน:</label
             >
             <select
               id="filter-exec-id"
-              class="form-select form-select-sm"
+              class="form-select form-select-sm py-0"
+              style="font-size: 11.5px"
               onchange="renderScheduleTable()"
             >
               <option value="">-- แสดงผู้บริหารทุกท่าน (ดูภาพรวม) --</option>
@@ -217,32 +225,36 @@
         </div>
       </div>
 
-      <!-- Schedule Table Container (A4 Portrait Fit Area) -->
+      <!-- Schedule Table Container (A4 Single Page Target) -->
       <div class="card card-custom p-2">
         <div id="schedule-table-container">
-          <div class="text-center mb-2">
-            <h6 class="fw-bold mb-0" style="font-size: 15px">
+          <div class="text-center mb-1">
+            <div class="fw-bold" style="font-size: 13.5px; color: #111">
               กำหนดการประชุม / ภารกิจของ นายแพทย์สาธารณสุขจังหวัดลพบุรี
-            </h6>
-            <p class="fw-bold mb-0 text-secondary" style="font-size: 12px">
+            </div>
+            <div class="fw-bold text-secondary" style="font-size: 11px">
               และการมอบหมายงานให้รองนายแพทย์สาธารณสุขจังหวัดลพบุรี ปฏิบัติราชการ
-            </p>
-            <p class="fs-6 text-primary fw-bold mb-0" id="display-date-str">
+            </div>
+            <div
+              class="text-primary fw-bold"
+              style="font-size: 12.5px"
+              id="display-date-str"
+            >
               ประจำวัน...
-            </p>
+            </div>
           </div>
 
-          <div class="table-responsive">
+          <div class="table-responsive" style="overflow-x: hidden">
             <!-- Table 1: Normal Events -->
-            <table class="table-schedule mb-2" id="main-table">
+            <table class="table-schedule mb-1" id="main-table">
               <thead>
                 <tr>
                   <th style="width: 25%">ชื่อ-สกุล ตำแหน่ง</th>
-                  <th style="width: 11%">เวลา</th>
-                  <th style="width: 34%">ภารกิจ</th>
+                  <th style="width: 10%">เวลา</th>
+                  <th style="width: 35%">ภารกิจ</th>
                   <th style="width: 15%">สถานที่</th>
                   <th style="width: 15%">การแต่งกาย / หมายเหตุ</th>
-                  <th class="no-export" style="width: 60px">จัดการ</th>
+                  <th class="no-export" style="width: 50px">จัดการ</th>
                 </tr>
               </thead>
               <tbody id="schedule-tbody">
@@ -264,19 +276,20 @@
             </div>
           </div>
 
-          <!-- Footer Meta (Publisher & Download Timestamp) -->
-          <div class="row table-footer-info mt-2 align-items-center">
-            <div class="col-6 text-start">
-              <span id="footer-publisher-text"></span>
+          <!-- Footer Bar: Publisher (Left) | Dev Credit (Center) | Timestamp (Right) -->
+          <div class="table-footer-container">
+            <div style="flex: 1; text-align: left" id="footer-publisher-text">
+              ผู้จัดทำข้อมูล: สำนักงานเลขาฯ
             </div>
-            <div class="col-6 text-end">
-              <span id="footer-download-time"></span>
-            </div>
-          </div>
-
-          <!-- Developer Credit Centered Bottom -->
-          <div class="text-center mt-1 pt-1 border-top">
-            <span class="table-dev-credit" id="footer-dev-credit"></span>
+            <div
+              style="flex: 2; text-align: center"
+              class="table-dev-credit"
+              id="footer-dev-credit"
+            ></div>
+            <div
+              style="flex: 1; text-align: right"
+              id="footer-download-time"
+            ></div>
           </div>
         </div>
       </div>
@@ -628,7 +641,7 @@
         leaveTbody.innerHTML = "";
 
         if (!appData.executives || appData.executives.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted p-3">ไม่พบรายชื่อผู้บริหาร</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted p-2">ไม่พบรายชื่อผู้บริหาร</td></tr>`;
           leaveSection.style.display = "none";
           return;
         }
@@ -658,11 +671,11 @@
 
             tr.innerHTML = `
             <td style="width: 25%;"><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>
-            <td style="width: 11%;" class="text-center fw-bold text-danger">${execLeave.period || "เต็มวัน"}</td>
-            <td style="width: 64%;" colspan="3">
+            <td style="width: 10%;" class="text-center fw-bold text-danger">${execLeave.period || "เต็มวัน"}</td>
+            <td style="width: 65%;" colspan="3">
               <span class="leave-badge"><i class="fa-solid fa-user-clock me-1"></i> [ ${execLeave.status_type}${periodStr} ]</span> ${remarkText}
             </td>
-            <td class="no-export text-center" style="width: 60px;">
+            <td class="no-export text-center" style="width: 50px;">
               <button class="btn btn-sm btn-outline-danger py-0 px-1" title="ยกเลิกสถานะ" onclick="clearLeaveConfirm('${execLeave.leave_id}')"><i class="fa-solid fa-circle-xmark"></i></button>
             </td>
           `;
@@ -1000,9 +1013,9 @@
         wrap.style.position = "absolute";
         wrap.style.left = "-9999px";
         wrap.style.top = "-9999px";
-        wrap.style.width = "1050px";
+        wrap.style.width = "1000px";
         wrap.style.backgroundColor = "#ffffff";
-        wrap.style.padding = "15px";
+        wrap.style.padding = "10px";
         wrap.style.boxSizing = "border-box";
 
         wrap.appendChild(clone);
@@ -1026,7 +1039,7 @@
         });
       }
 
-      // A4 Portrait Fitting PDF Engine
+      // Dynamic A4 Portrait Single Page Engine
       function exportPDF() {
         updateDownloadTimestamp();
         const { jsPDF } = window.jspdf;
@@ -1035,13 +1048,23 @@
           .querySelectorAll(".no-export")
           .forEach((el) => (el.style.display = "none"));
 
-        html2canvas(element, { scale: 2.5 }).then((canvas) => {
+        html2canvas(element, { scale: 2.2 }).then((canvas) => {
           const imgData = canvas.toDataURL("image/png");
           const pdf = new jsPDF("p", "mm", "a4"); // A4 Portrait
-          const pdfWidth = 198; // 210mm - 12mm margins
+          const pdfWidth = 200; // 210mm - 10mm margins
           const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-          pdf.addImage(imgData, "PNG", 6, 6, pdfWidth, pdfHeight);
+          // Auto scale to fit inside 280mm height limit if content is tall
+          const maxHeight = 280;
+          let finalWidth = pdfWidth;
+          let finalHeight = pdfHeight;
+          if (pdfHeight > maxHeight) {
+            finalHeight = maxHeight;
+            finalWidth = (canvas.width * finalHeight) / canvas.height;
+          }
+
+          const xOffset = (210 - finalWidth) / 2;
+          pdf.addImage(imgData, "PNG", xOffset, 5, finalWidth, finalHeight);
           pdf.save(
             `ตารางงานผู้บริหาร_${document.getElementById("search-date").value}.pdf`,
           );
