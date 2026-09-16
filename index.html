@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>ระบบจัดการตารางงานผู้บริหาร สสจ.ลพบุรี</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+      body {
+        font-family: "Sarabun", sans-serif;
+        background-color: #f4f7f6;
+        color: #333;
+      }
+      .header-banner {
+        background: linear-gradient(135deg, #1d3557 0%, #457b9d 100%);
+        color: white;
+        padding: 15px 0;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      .card-custom {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        background: white;
+      }
+      #schedule-table-container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+      }
+      .table-schedule {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      .table-schedule th,
+      .table-schedule td {
+        border: 1px solid #222;
+        padding: 8px 10px;
+        vertical-align: middle;
+        font-size: 14.5px;
+      }
+      .table-schedule th {
+        background-color: #e2ece9;
+        text-align: center;
+        font-weight: 700;
+        color: #1d3557;
+      }
+      .exec-name {
+        font-weight: 700;
+        color: #0d1b2a;
+      }
+      .exec-pos {
+        font-size: 12.5px;
+        color: #415a77;
+      }
+      .leave-badge {
+        background-color: #ffe5ec;
+        color: #d90429;
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 6px;
+        display: inline-block;
+        border: 1px dashed #d90429;
+      }
+      .btn-mobile-touch {
+        padding: 8px 14px;
+        font-weight: 600;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header Banner -->
+    <div class="header-banner mb-3">
+      <div class="container d-flex justify-content-between align-items-center">
+        <div>
+          <h4 class="mb-0 fw-bold">
+            <i class="fa-solid fa-calendar-days me-2"></i
+            >ตารางงานประจำวันผู้บริหาร
+          </h4>
+          <small class="text-light">สสจ.ลพบุรี (ตารางงานวันถัดไป)</small>
+        </div>
+        <div>
+          <button
+            class="btn btn-outline-light btn-sm fw-bold"
+            onclick="openAdminLoginModal()"
+          >
+            <i class="fa-solid fa-user-gear"></i> Admin
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mb-5 px-2 px-md-3">
+      <!-- Controls Card -->
+      <div class="card card-custom p-3 mb-3">
+        <div class="row g-3 align-items-center">
+          <div class="col-md-3">
+            <label class="form-label fw-bold mb-1"
+              ><i class="fa-regular fa-calendar-check me-1"></i>
+              เลือกวันที่บันทึก:</label
+            >
+            <input
+              type="date"
+              id="search-date"
+              class="form-control form-control-lg"
+              onchange="loadSchedule()"
+            />
+          </div>
+          <div class="col-md-9 pt-2 pt-md-0">
+            <div class="d-flex flex-wrap gap-2">
+              <button
+                class="btn btn-primary btn-mobile-touch"
+                onclick="openAddEventModal()"
+              >
+                <i class="fa-solid fa-plus me-1"></i> เพิ่มภารกิจ
+              </button>
+              <button
+                class="btn btn-warning btn-mobile-touch text-dark"
+                onclick="openLeaveModal()"
+              >
+                <i class="fa-solid fa-user-slash me-1"></i> ลา/ไปราชการ
+              </button>
+              <button
+                class="btn btn-outline-success btn-mobile-touch"
+                onclick="exportImage169()"
+              >
+                <i class="fa-solid fa-file-image me-1"></i> PNG (16:9)
+              </button>
+              <button
+                class="btn btn-outline-danger btn-mobile-touch"
+                onclick="exportPDF()"
+              >
+                <i class="fa-solid fa-file-pdf me-1"></i> PDF (A4)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Schedule Table -->
+      <div class="card card-custom p-2 p-md-4">
+        <div id="schedule-table-container">
+          <div class="text-center mb-3">
+            <h5 class="fw-bold mb-1">
+              กำหนดการประชุม / ภารกิจของ นายแพทย์สาธารณสุขจังหวัดลพบุรี
+            </h5>
+            <h6 class="fw-bold mb-1 text-secondary">
+              และการมอบหมายงานให้รองนายแพทย์สาธารณสุขจังหวัดลพบุรี ปฏิบัติราชการ
+            </h6>
+            <p class="fs-5 text-primary fw-bold mb-0" id="display-date-str">
+              ประจำวัน...
+            </p>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table-schedule" id="main-table">
+              <thead>
+                <tr>
+                  <th style="width: 25%">ชื่อ-สกุล ตำแหน่ง</th>
+                  <th style="width: 12%">เวลา</th>
+                  <th style="width: 32%">ภารกิจ</th>
+                  <th style="width: 16%">สถานที่</th>
+                  <th style="width: 15%">การแต่งกาย / หมายเหตุ</th>
+                  <th class="no-export" style="width: 70px">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="schedule-tbody">
+                <!-- Render by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 1: Add/Edit Event -->
+    <div class="modal fade" id="eventModal" tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header bg-light">
+            <h5 class="modal-title fw-bold" id="modalTitle">
+              <i class="fa-solid fa-calendar-plus me-2"></i>บันทึกภารกิจ
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="eventForm">
+              <input type="hidden" id="event-id" />
+              <input type="hidden" id="end-time" value="" />
+
+              <div class="mb-3">
+                <label class="form-label fw-bold"
+                  >เลือกผู้บริหารที่เข้าร่วม (เลือกได้หลายท่าน):</label
+                >
+                <div
+                  id="executives-checkbox-group"
+                  class="row g-2 p-2 border rounded bg-light"
+                  style="max-height: 220px; overflow-y: auto"
+                ></div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">วันที่:</label>
+                  <input
+                    type="date"
+                    id="event-date"
+                    class="form-control form-control-lg"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">เวลาเริ่มภารกิจ:</label>
+                  <input
+                    type="time"
+                    id="start-time"
+                    class="form-control form-control-lg"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-bold">ภารกิจ / เรื่องประชุม:</label>
+                <textarea
+                  id="event-title"
+                  class="form-control"
+                  rows="3"
+                  placeholder="กรอกรายละเอียดภารกิจ..."
+                  required
+                ></textarea>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">สถานที่:</label>
+                  <input
+                    type="text"
+                    id="event-location"
+                    class="form-control form-control-lg"
+                    list="location-list"
+                    placeholder="เลือกหรือพิมพ์สถานที่..."
+                  />
+                  <datalist id="location-list"></datalist>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">การแต่งกาย:</label>
+                  <input
+                    type="text"
+                    id="event-dress"
+                    class="form-control form-control-lg"
+                    list="dress-list"
+                    placeholder="เลือกหรือพิมพ์การแต่งกาย..."
+                  />
+                  <datalist id="dress-list"></datalist>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-bold">หมายเหตุ:</label>
+                <input
+                  type="text"
+                  id="event-remark"
+                  class="form-control"
+                  placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              ยกเลิก
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary fw-bold"
+              onclick="submitEventForm()"
+            >
+              บันทึกภารกิจ
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 2: Leave Status -->
+    <div class="modal fade" id="leaveModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-warning text-dark">
+            <h5 class="modal-title fw-bold">
+              <i class="fa-solid fa-user-slash me-2"></i>บันทึกการลา / ไปราชการ
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="leaveForm">
+              <div class="mb-3">
+                <label class="form-label fw-bold">เลือกผู้บริหาร:</label>
+                <select
+                  id="leave-exec-id"
+                  class="form-select form-select-lg"
+                  required
+                ></select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-bold">วันที่:</label>
+                <input
+                  type="date"
+                  id="leave-date"
+                  class="form-control form-control-lg"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-bold">สถานะการลา/ปฏิบัติงาน:</label>
+                <select
+                  id="leave-type"
+                  class="form-select form-select-lg"
+                  required
+                >
+                  <option value="ลาป่วย">ลาป่วย</option>
+                  <option value="ลากิจ">ลากิจ</option>
+                  <option value="ลาพักผ่อน">ลาพักผ่อน</option>
+                  <option value="ไปราชการต่างจังหวัด">
+                    ไปราชการต่างจังหวัด
+                  </option>
+                  <option value="ปฏิบัติภารกิจอื่น">ปฏิบัติภารกิจอื่น</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-bold">รายละเอียดเพิ่มเติม:</label>
+                <input
+                  type="text"
+                  id="leave-remark"
+                  class="form-control"
+                  placeholder="ระบุรายละเอียดเพิ่มเติม"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              ยกเลิก
+            </button>
+            <button
+              type="button"
+              class="btn btn-warning fw-bold"
+              onclick="submitLeaveForm()"
+            >
+              บันทึกสถานะ
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const GAS_API_URL =
+        "https://script.google.com/macros/s/AKfycbzcXt4sThSINKmzxzew8oqhtJiEcgwCCzGQNBGiw5k5eVobrgBfdHCaoNjonX2TZ5z5/exec";
+
+      let currentAdminPass = "";
+      let appData = {
+        executives: [],
+        events: [],
+        leaves: [],
+        locations: [],
+        dressCodes: [],
+      };
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Set Default Date to TOMORROW
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        document.getElementById("search-date").valueAsDate = tomorrow;
+
+        loadSchedule();
+      });
+
+      // Handle Fetching Data with Redirection Handling
+      async function loadSchedule() {
+        const targetDate = document.getElementById("search-date").value;
+        Swal.fire({
+          title: "กำลังดึงข้อมูล...",
+          didOpen: () => Swal.showLoading(),
+        });
+
+        try {
+          const url = `${GAS_API_URL}?action=getSchedule&date=${targetDate}`;
+          const res = await fetch(url, { method: "GET", redirect: "follow" });
+          appData = await res.json();
+
+          renderScheduleTable();
+          populateDatalists();
+          Swal.close();
+        } catch (err) {
+          console.error(err);
+          Swal.fire(
+            "ข้อผิดพลาด",
+            "ไม่สามารถเชื่อมต่อฐานข้อมูลได้ กรุณาตรวจสอบการ Deploy บน GAS",
+            "error",
+          );
+        }
+      }
+
+      function renderScheduleTable() {
+        const dateVal = new Date(document.getElementById("search-date").value);
+        const thaiDateStr = dateVal.toLocaleDateString("th-TH", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+        document.getElementById("display-date-str").innerText =
+          `ประจำวัน${thaiDateStr}`;
+
+        const tbody = document.getElementById("schedule-tbody");
+        tbody.innerHTML = "";
+
+        if (!appData.executives || appData.executives.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted p-4">ไม่พบข้อมูลรายชื่อผู้บริหารในแท็บ Executives หรือ API ขัดข้อง</td></tr>`;
+          return;
+        }
+
+        appData.executives.forEach((exec) => {
+          const execEvents = (appData.events || []).filter((ev) =>
+            ev.assigned_exec_ids.includes(exec.exec_id),
+          );
+          const execLeave = (appData.leaves || []).find(
+            (l) => l.exec_id === exec.exec_id,
+          );
+
+          if (execLeave) {
+            const tr = document.createElement("tr");
+            const remarkText = execLeave.remark ? ` (${execLeave.remark})` : "";
+            tr.innerHTML = `
+            <td><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>
+            <td class="text-center">-</td>
+            <td colspan="3" class="text-center">
+              <span class="leave-badge"><i class="fa-solid fa-user-clock me-1"></i> [ ${execLeave.status_type} ] ${remarkText}</span>
+            </td>
+            <td class="no-export text-center">
+              <button class="btn btn-sm btn-outline-danger" title="ยกเลิกสถานะ" onclick="clearLeaveConfirm('${execLeave.leave_id}')"><i class="fa-solid fa-circle-xmark"></i></button>
+            </td>
+          `;
+            tbody.appendChild(tr);
+          } else if (execEvents.length === 0) {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+            <td><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>
+            <td class="text-center">-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td class="no-export text-center"></td>
+          `;
+            tbody.appendChild(tr);
+          } else {
+            execEvents.forEach((ev, idx) => {
+              const tr = document.createElement("tr");
+              let nameTd = "";
+              if (idx === 0) {
+                nameTd = `<td rowspan="${execEvents.length}"><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>`;
+              }
+
+              const timeStr = `${ev.start_time} น.`;
+              const dressRemark = [ev.dress_code, ev.remark]
+                .filter(Boolean)
+                .join(" / ");
+
+              tr.innerHTML = `
+              ${nameTd}
+              <td class="text-center fw-bold">${timeStr}</td>
+              <td>${ev.title}</td>
+              <td>${ev.location || "-"}</td>
+              <td>${dressRemark || "-"}</td>
+              <td class="no-export text-center">
+                <button class="btn btn-sm btn-outline-warning me-1" onclick="editEvent('${ev.event_id}')"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteEventConfirm('${ev.event_id}')"><i class="fa-solid fa-trash"></i></button>
+              </td>
+            `;
+              tbody.appendChild(tr);
+            });
+          }
+        });
+      }
+
+      function populateDatalists() {
+        const locList = document.getElementById("location-list");
+        if (locList && appData.locations)
+          locList.innerHTML = appData.locations
+            .map((l) => `<option value="${l}">`)
+            .join("");
+
+        const dressList = document.getElementById("dress-list");
+        if (dressList && appData.dressCodes)
+          dressList.innerHTML = appData.dressCodes
+            .map((d) => `<option value="${d}">`)
+            .join("");
+
+        const leaveExecSelect = document.getElementById("leave-exec-id");
+        if (leaveExecSelect && appData.executives) {
+          leaveExecSelect.innerHTML = appData.executives
+            .map(
+              (e) =>
+                `<option value="${e.exec_id}">${e.name} (${e.position})</option>`,
+            )
+            .join("");
+        }
+      }
+
+      async function checkAdminPass() {
+        if (currentAdminPass) return true;
+        const { value: password } = await Swal.fire({
+          title: "ยืนยันตัวตน Admin",
+          input: "password",
+          inputLabel: "กรุณากรอกรหัสผ่าน Admin",
+          showCancelButton: true,
+        });
+        if (password) {
+          const res = await fetch(
+            `${GAS_API_URL}?action=verifyAdmin&password=${password}`,
+            { method: "GET", redirect: "follow" },
+          );
+          const data = await res.json();
+          if (data.success) {
+            currentAdminPass = password;
+            return true;
+          } else {
+            Swal.fire("ผิดพลาด", "รหัสผ่านไม่ถูกต้อง", "error");
+          }
+        }
+        return false;
+      }
+
+      async function openAddEventModal() {
+        if (!(await checkAdminPass())) return;
+        document.getElementById("eventForm").reset();
+        document.getElementById("event-id").value = "";
+        document.getElementById("event-date").value =
+          document.getElementById("search-date").value;
+        renderExecCheckboxes([]);
+        new bootstrap.Modal(document.getElementById("eventModal")).show();
+      }
+
+      async function openLeaveModal() {
+        if (!(await checkAdminPass())) return;
+        document.getElementById("leaveForm").reset();
+        document.getElementById("leave-date").value =
+          document.getElementById("search-date").value;
+        new bootstrap.Modal(document.getElementById("leaveModal")).show();
+      }
+
+      function renderExecCheckboxes(selectedIds) {
+        const container = document.getElementById("executives-checkbox-group");
+        if (!appData.executives || appData.executives.length === 0) {
+          container.innerHTML = `<div class="text-danger p-2">ไม่พบรายชื่อผู้บริหาร กรุณาตรวจสอบแท็บ Executives ใน Google Sheets</div>`;
+          return;
+        }
+
+        container.innerHTML = appData.executives
+          .map(
+            (exec) => `
+        <div class="col-12 col-md-6">
+          <div class="form-check">
+            <input class="form-check-input exec-cb" type="checkbox" value="${exec.exec_id}" id="cb-${exec.exec_id}" ${selectedIds.includes(exec.exec_id) ? "checked" : ""}>
+            <label class="form-check-label" for="cb-${exec.exec_id}">
+              <strong>${exec.name}</strong> <small class="text-muted">(${exec.position})</small>
+            </label>
+          </div>
+        </div>
+      `,
+          )
+          .join("");
+      }
+
+      async function submitEventForm() {
+        const selectedExecs = Array.from(
+          document.querySelectorAll(".exec-cb:checked"),
+        ).map((cb) => cb.value);
+        if (selectedExecs.length === 0) {
+          Swal.fire("เตือน", "กรุณาเลือกผู้บริหารอย่างน้อย 1 ท่าน", "warning");
+          return;
+        }
+
+        const payload = {
+          action: "saveEvent",
+          password: currentAdminPass,
+          event: {
+            event_id: document.getElementById("event-id").value,
+            assigned_exec_ids: selectedExecs,
+            event_date: document.getElementById("event-date").value,
+            start_time: document.getElementById("start-time").value,
+            end_time: document.getElementById("end-time").value || "",
+            title: document.getElementById("event-title").value,
+            location: document.getElementById("event-location").value,
+            dress_code: document.getElementById("event-dress").value,
+            remark: document.getElementById("event-remark").value,
+          },
+        };
+
+        Swal.fire({
+          title: "กำลังบันทึกและซิงก์ ปฏิทิน...",
+          didOpen: () => Swal.showLoading(),
+        });
+        const res = await fetch(GAS_API_URL, {
+          method: "POST",
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          bootstrap.Modal.getInstance(
+            document.getElementById("eventModal"),
+          ).hide();
+          Swal.fire("สำเร็จ", "บันทึกข้อมูลเรียบร้อย", "success");
+          loadSchedule();
+        }
+      }
+
+      async function submitLeaveForm() {
+        const payload = {
+          action: "saveLeaveStatus",
+          password: currentAdminPass,
+          leave: {
+            exec_id: document.getElementById("leave-exec-id").value,
+            leave_date: document.getElementById("leave-date").value,
+            status_type: document.getElementById("leave-type").value,
+            remark: document.getElementById("leave-remark").value,
+          },
+        };
+
+        Swal.fire({
+          title: "กำลังบันทึกสถานะการลา...",
+          didOpen: () => Swal.showLoading(),
+        });
+        const res = await fetch(GAS_API_URL, {
+          method: "POST",
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          bootstrap.Modal.getInstance(
+            document.getElementById("leaveModal"),
+          ).hide();
+          Swal.fire("สำเร็จ", "บันทึกสถานะการลาเรียบร้อย", "success");
+          loadSchedule();
+        }
+      }
+
+      async function editEvent(eventId) {
+        if (!(await checkAdminPass())) return;
+        const ev = appData.events.find((e) => e.event_id === eventId);
+        if (!ev) return;
+
+        document.getElementById("event-id").value = ev.event_id;
+        document.getElementById("event-date").value = ev.event_date;
+        document.getElementById("start-time").value = ev.start_time;
+        document.getElementById("event-title").value = ev.title;
+        document.getElementById("event-location").value = ev.location;
+        document.getElementById("event-dress").value = ev.dress_code;
+        document.getElementById("event-remark").value = ev.remark;
+
+        renderExecCheckboxes(ev.assigned_exec_ids);
+        new bootstrap.Modal(document.getElementById("eventModal")).show();
+      }
+
+      async function clearLeaveConfirm(leaveId) {
+        if (!(await checkAdminPass())) return;
+        const confirm = await Swal.fire({
+          title: "ยกเลิกสถานะลา?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "ตกลง",
+        });
+        if (confirm.isConfirmed) {
+          await fetch(GAS_API_URL, {
+            method: "POST",
+            body: JSON.stringify({
+              action: "clearLeaveStatus",
+              password: currentAdminPass,
+              leave_id: leaveId,
+            }),
+          });
+          loadSchedule();
+        }
+      }
+
+      async function deleteEventConfirm(eventId) {
+        if (!(await checkAdminPass())) return;
+        const confirm = await Swal.fire({
+          title: "ยืนยันการลบภารกิจ?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "ลบข้อมูล",
+        });
+        if (confirm.isConfirmed) {
+          await fetch(GAS_API_URL, {
+            method: "POST",
+            body: JSON.stringify({
+              action: "deleteEvent",
+              password: currentAdminPass,
+              event_id: eventId,
+            }),
+          });
+          loadSchedule();
+        }
+      }
+
+      function exportImage169() {
+        const element = document.getElementById("schedule-table-container");
+        document
+          .querySelectorAll(".no-export")
+          .forEach((el) => (el.style.display = "none"));
+
+        html2canvas(element, { scale: 2 }).then((canvas) => {
+          const outputCanvas = document.createElement("canvas");
+          outputCanvas.width = 1920;
+          outputCanvas.height = 1080;
+          const ctx = outputCanvas.getContext("2d");
+
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, 1920, 1080);
+
+          const scale = Math.min(1800 / canvas.width, 980 / canvas.height);
+          const w = canvas.width * scale;
+          const h = canvas.height * scale;
+          const x = (1920 - w) / 2;
+          const y = (1080 - h) / 2;
+
+          ctx.drawImage(canvas, x, y, w, h);
+
+          const link = document.createElement("a");
+          link.download = `ตารางงานผู้บริหาร_${document.getElementById("search-date").value}.png`;
+          link.href = outputCanvas.toDataURL("image/png");
+          link.click();
+
+          document
+            .querySelectorAll(".no-export")
+            .forEach((el) => (el.style.display = ""));
+        });
+      }
+
+      function exportPDF() {
+        const { jsPDF } = window.jspdf;
+        const element = document.getElementById("schedule-table-container");
+
+        document
+          .querySelectorAll(".no-export")
+          .forEach((el) => (el.style.display = "none"));
+
+        html2canvas(element, { scale: 2 }).then((canvas) => {
+          const imgData = canvas.toDataURL("image/png");
+          const pdf = new jsPDF("l", "mm", "a4");
+          const imgWidth = 280;
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+          pdf.addImage(imgData, "PNG", 8, 10, imgWidth, imgHeight);
+          pdf.save(
+            `ตารางงานผู้บริหาร_${document.getElementById("search-date").value}.pdf`,
+          );
+
+          document
+            .querySelectorAll(".no-export")
+            .forEach((el) => (el.style.display = ""));
+        });
+      }
+    </script>
+  </body>
+</html>
