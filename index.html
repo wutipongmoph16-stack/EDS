@@ -39,28 +39,29 @@
       }
       .card-custom {
         border: none;
-        border-radius: 10px;
+        border-radius: 8px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         background: white;
       }
       #schedule-table-container {
         background: white;
-        padding: 10px 12px;
+        padding: 10px;
         border-radius: 6px;
       }
       .table-schedule {
         border-collapse: collapse;
         width: 100%;
         table-layout: fixed;
+        margin-bottom: 0 !important;
       }
-      /* Ultra-Compact Layout for A4 Single Page Fit */
+      /* Ultra Tight Padding & Height Fix */
       .table-schedule th,
       .table-schedule td {
         border: 1px solid #111;
-        padding: 2px 4px !important;
+        padding: 1px 4px !important;
         vertical-align: middle;
-        font-size: 11.5px;
-        line-height: 1.1 !important;
+        font-size: 11px;
+        line-height: 1.05 !important;
         word-break: break-word;
         white-space: pre-wrap;
       }
@@ -69,28 +70,29 @@
         text-align: center;
         font-weight: 700;
         color: #1d3557;
-        padding: 4px 2px !important;
+        padding: 3px 2px !important;
       }
       .exec-name {
         font-weight: 700;
         color: #0d1b2a;
-        font-size: 11.5px;
-        line-height: 1.05;
+        font-size: 11px;
+        line-height: 1;
       }
       .exec-pos {
-        font-size: 10px;
+        font-size: 9.5px;
         color: #415a77;
-        line-height: 1.05;
+        line-height: 1;
       }
 
       .leave-table-header {
         background-color: #fff3cd;
         color: #856404;
         font-weight: bold;
-        padding: 3px;
+        padding: 2px 4px;
         font-size: 11px;
         border: 1px solid #111;
         border-bottom: none;
+        margin-top: 4px;
       }
       .leave-badge {
         background-color: #ffe5ec;
@@ -99,10 +101,10 @@
         padding: 0px 4px;
         border-radius: 3px;
         display: inline-block;
-        font-size: 10.5px;
+        font-size: 10px;
       }
       .joint-exec-badge {
-        font-size: 9.5px;
+        font-size: 9px;
         background-color: #e0f2fe;
         color: #0369a1;
         border: 1px solid #bae6fd;
@@ -110,23 +112,23 @@
         border-radius: 2px;
         margin-top: 1px;
         display: inline-block;
-        line-height: 1.05;
+        line-height: 1;
       }
       .table-footer-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 6px;
-        padding-top: 4px;
+        margin-top: 5px;
+        padding-top: 3px;
         border-top: 1px solid #ddd;
-        font-size: 10px;
+        font-size: 9.5px;
         color: #444;
         font-weight: 600;
       }
       .table-dev-credit {
-        font-size: 9px;
+        font-size: 8.5px;
         color: #666;
-        opacity: 0.7;
+        opacity: 0.75;
         text-align: center;
       }
       .btn-mobile-touch {
@@ -216,7 +218,7 @@
             <select
               id="filter-exec-id"
               class="form-select form-select-sm py-0"
-              style="font-size: 11.5px"
+              style="font-size: 11px"
               onchange="renderScheduleTable()"
             >
               <option value="">-- แสดงผู้บริหารทุกท่าน (ดูภาพรวม) --</option>
@@ -225,19 +227,19 @@
         </div>
       </div>
 
-      <!-- Schedule Table Container (A4 Single Page Target) -->
+      <!-- Schedule Table Container -->
       <div class="card card-custom p-2">
         <div id="schedule-table-container">
           <div class="text-center mb-1">
-            <div class="fw-bold" style="font-size: 13.5px; color: #111">
+            <div class="fw-bold" style="font-size: 13px; color: #111">
               กำหนดการประชุม / ภารกิจของ นายแพทย์สาธารณสุขจังหวัดลพบุรี
             </div>
-            <div class="fw-bold text-secondary" style="font-size: 11px">
+            <div class="fw-bold text-secondary" style="font-size: 10.5px">
               และการมอบหมายงานให้รองนายแพทย์สาธารณสุขจังหวัดลพบุรี ปฏิบัติราชการ
             </div>
             <div
               class="text-primary fw-bold"
-              style="font-size: 12.5px"
+              style="font-size: 12px"
               id="display-date-str"
             >
               ประจำวัน...
@@ -543,6 +545,14 @@
         loadSchedule();
       });
 
+      // Safe ID normalization helper
+      function normId(str) {
+        if (!str) return "";
+        return String(str)
+          .replace(/[^a-zA-Z0-9]/g, "")
+          .toUpperCase();
+      }
+
       function cleanTimeDisplay(raw) {
         if (!raw) return "-";
         if (raw.includes("T")) {
@@ -612,9 +622,17 @@
         const select = document.getElementById("filter-exec-id");
         const currentVal = select.value;
         select.innerHTML = `<option value="">-- แสดงผู้บริหารทุกท่าน (ดูภาพรวม) --</option>`;
+
         if (appData.executives) {
           appData.executives.forEach((e) => {
-            select.innerHTML += `<option value="${e.exec_id}">${e.name} (${e.position})</option>`;
+            const execLeave = (appData.leaves || []).find(
+              (l) => normId(l.exec_id) === normId(e.exec_id),
+            );
+            let statusTag = "";
+            if (execLeave) {
+              statusTag = ` [ ${execLeave.status_type} (${execLeave.period || "เต็มวัน"}) ]`;
+            }
+            select.innerHTML += `<option value="${e.exec_id}">${e.name} (${e.position})${statusTag}</option>`;
           });
         }
         select.value = currentVal;
@@ -647,17 +665,23 @@
         }
 
         const displayExecs = selectedExecFilter
-          ? appData.executives.filter((e) => e.exec_id === selectedExecFilter)
+          ? appData.executives.filter(
+              (e) => normId(e.exec_id) === normId(selectedExecFilter),
+            )
           : appData.executives;
 
         let hasLeaves = false;
 
         displayExecs.forEach((exec) => {
           const execEvents = (appData.events || []).filter((ev) =>
-            ev.assigned_exec_ids.includes(exec.exec_id),
+            (ev.assigned_exec_ids || []).some(
+              (id) => normId(id) === normId(exec.exec_id),
+            ),
           );
+
+          // Flexible Leave Match
           const execLeave = (appData.leaves || []).find(
-            (l) => l.exec_id === exec.exec_id,
+            (l) => normId(l.exec_id) === normId(exec.exec_id),
           );
 
           if (execLeave) {
@@ -673,7 +697,7 @@
             <td style="width: 25%;"><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>
             <td style="width: 10%;" class="text-center fw-bold text-danger">${execLeave.period || "เต็มวัน"}</td>
             <td style="width: 65%;" colspan="3">
-              <span class="leave-badge"><i class="fa-solid fa-user-clock me-1"></i> [ ${execLeave.status_type}${periodStr} ]</span> ${remarkText}
+              <span class="leave-badge"><i class="fa-solid fa-user-clock me-1"></i> [ ${execLeave.status_type}${periodStr} ]</span>${remarkText}
             </td>
             <td class="no-export text-center" style="width: 50px;">
               <button class="btn btn-sm btn-outline-danger py-0 px-1" title="ยกเลิกสถานะ" onclick="clearLeaveConfirm('${execLeave.leave_id}')"><i class="fa-solid fa-circle-xmark"></i></button>
@@ -707,8 +731,9 @@
               const jointExecNames = appData.executives
                 .filter(
                   (e) =>
-                    ev.assigned_exec_ids.includes(e.exec_id) &&
-                    e.exec_id !== exec.exec_id,
+                    (ev.assigned_exec_ids || []).some(
+                      (id) => normId(id) === normId(e.exec_id),
+                    ) && normId(e.exec_id) !== normId(exec.exec_id),
                 )
                 .map((e) => e.name);
 
@@ -820,12 +845,14 @@
           return;
         }
 
+        const normSelected = selectedIds.map((id) => normId(id));
+
         container.innerHTML = appData.executives
           .map(
             (exec) => `
         <div class="col-12 col-md-6">
           <div class="form-check">
-            <input class="form-check-input exec-cb" type="checkbox" value="${exec.exec_id}" id="cb-${exec.exec_id}" ${selectedIds.includes(exec.exec_id) ? "checked" : ""}>
+            <input class="form-check-input exec-cb" type="checkbox" value="${exec.exec_id}" id="cb-${exec.exec_id}" ${normSelected.includes(normId(exec.exec_id)) ? "checked" : ""}>
             <label class="form-check-label" for="cb-${exec.exec_id}">
               <strong>${exec.name}</strong> <small class="text-muted">(${exec.position})</small>
             </label>
@@ -1039,7 +1066,6 @@
         });
       }
 
-      // Dynamic A4 Portrait Single Page Engine
       function exportPDF() {
         updateDownloadTimestamp();
         const { jsPDF } = window.jspdf;
@@ -1050,11 +1076,10 @@
 
         html2canvas(element, { scale: 2.2 }).then((canvas) => {
           const imgData = canvas.toDataURL("image/png");
-          const pdf = new jsPDF("p", "mm", "a4"); // A4 Portrait
-          const pdfWidth = 200; // 210mm - 10mm margins
+          const pdf = new jsPDF("p", "mm", "a4");
+          const pdfWidth = 200;
           const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-          // Auto scale to fit inside 280mm height limit if content is tall
           const maxHeight = 280;
           let finalWidth = pdfWidth;
           let finalHeight = pdfHeight;
