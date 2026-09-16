@@ -54,7 +54,6 @@
         table-layout: fixed;
         margin-bottom: 0 !important;
       }
-      /* Ultra Tight Padding & Height Fix */
       .table-schedule th,
       .table-schedule td {
         border: 1px solid #111;
@@ -256,7 +255,7 @@
                   <th style="width: 35%">ภารกิจ</th>
                   <th style="width: 15%">สถานที่</th>
                   <th style="width: 15%">การแต่งกาย / หมายเหตุ</th>
-                  <th class="no-export">จัดการ</th>
+                  <th class="no-export" style="width: 50px">จัดการ</th>
                 </tr>
               </thead>
               <tbody id="schedule-tbody">
@@ -545,7 +544,6 @@
         loadSchedule();
       });
 
-      // Safe ID normalization helper
       function normId(str) {
         if (!str) return "";
         return String(str)
@@ -679,7 +677,6 @@
             ),
           );
 
-          // Flexible Leave Match
           const execLeave = (appData.leaves || []).find(
             (l) => normId(l.exec_id) === normId(exec.exec_id),
           );
