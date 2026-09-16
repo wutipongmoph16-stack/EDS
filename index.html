@@ -51,6 +51,7 @@
       .table-schedule {
         border-collapse: collapse;
         width: 100%;
+        table-layout: fixed;
       }
       .table-schedule th,
       .table-schedule td {
@@ -58,6 +59,8 @@
         padding: 9px 10px;
         vertical-align: middle;
         font-size: 14.5px;
+        word-break: break-word;
+        white-space: pre-wrap;
       }
       .table-schedule th {
         background-color: #e2ece9;
@@ -92,13 +95,21 @@
         margin-top: 4px;
         display: inline-block;
       }
+      .table-footer-info {
+        font-size: 12.5px;
+        color: #555;
+        font-weight: 600;
+      }
+      .table-dev-credit {
+        font-size: 11px;
+        color: #777;
+        opacity: 0.45;
+        letter-spacing: 0.3px;
+      }
       .btn-mobile-touch {
         padding: 8px 14px;
         font-weight: 600;
         border-radius: 8px;
-      }
-      .row-highlight {
-        background-color: #f0f9ff !important;
       }
     </style>
   </head>
@@ -219,6 +230,26 @@
                 <!-- JS Render -->
               </tbody>
             </table>
+          </div>
+
+          <!-- Footer Meta (Publisher & Download Timestamp) -->
+          <div class="row table-footer-info mt-3 align-items-center">
+            <div class="col-6 text-start">
+              <span id="footer-publisher-text"
+                >ผู้จัดทำข้อมูล: สำนักงานเลขาฯ</span
+              >
+            </div>
+            <div class="col-6 text-end">
+              <span id="footer-download-time"></span>
+            </div>
+          </div>
+
+          <!-- Developer Credit Centered Bottom -->
+          <div class="text-center mt-3 pt-2 border-top">
+            <span class="table-dev-credit"
+              >พัฒนาระบบโดย: งานโสตทัศนูปกรณ์ กลุ่มงานพัฒนายุทธศาสตร์สาธารณสุข
+              สสจ.ลพบุรี</span
+            >
           </div>
         </div>
       </div>
@@ -434,6 +465,7 @@
         leaves: [],
         locations: [],
         dressCodes: [],
+        publisher: "สำนักงานเลขาฯ",
       };
 
       document.addEventListener("DOMContentLoaded", () => {
@@ -457,7 +489,6 @@
         return t;
       }
 
-      // Convert "09.00 น." back to "09:00" for input type="time"
       function timeToInputValue(timeStr) {
         if (!timeStr) return "";
         let clean = timeStr.replace(" น.", "").trim();
@@ -466,6 +497,21 @@
           return `${parts[0].padStart(2, "0")}:${parts[1].padStart(2, "0")}`;
         }
         return clean;
+      }
+
+      function updateDownloadTimestamp() {
+        const now = new Date();
+        const thaiDate = now.toLocaleDateString("th-TH", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        });
+        const timeStr = now.toLocaleTimeString("th-TH", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+        document.getElementById("footer-download-time").innerText =
+          `ดาวน์โหลดเมื่อ: ${thaiDate} ${timeStr} น.`;
       }
 
       async function loadSchedule() {
@@ -479,6 +525,12 @@
           const url = `${GAS_API_URL}?action=getSchedule&date=${targetDate}`;
           const res = await fetch(url, { method: "GET", redirect: "follow" });
           appData = await res.json();
+
+          // Update Publisher Footer Text
+          if (appData.publisher) {
+            document.getElementById("footer-publisher-text").innerText =
+              `ผู้จัดทำข้อมูล: ${appData.publisher}`;
+          }
 
           populateExecFilterOptions();
           renderScheduleTable();
@@ -523,7 +575,6 @@
           return;
         }
 
-        // Filter list if selected
         const displayExecs = selectedExecFilter
           ? appData.executives.filter((e) => e.exec_id === selectedExecFilter)
           : appData.executives;
@@ -574,7 +625,6 @@
                 .filter(Boolean)
                 .join(" / ");
 
-              // Check Joint Attendees
               const jointExecNames = appData.executives
                 .filter(
                   (e) =>
@@ -712,8 +762,6 @@
 
         document.getElementById("event-id").value = ev.event_id;
         document.getElementById("event-date").value = ev.event_date;
-
-        // Auto Fill Previous Time cleanly
         document.getElementById("start-time").value = timeToInputValue(
           ev.start_time,
         );
@@ -866,8 +914,9 @@
         }
       }
 
-      // Auto Dynamic Height Export Engine (Fix Bottom Cut-off)
+      // Export PNG Engine (With Footer Meta Data & Watermark Credit)
       function exportImage169() {
+        updateDownloadTimestamp();
         const srcElement = document.getElementById("schedule-table-container");
         Swal.fire({
           title: "กำลังสร้างไฟล์รูปภาพ HD...",
@@ -910,6 +959,7 @@
       }
 
       function exportPDF() {
+        updateDownloadTimestamp();
         const { jsPDF } = window.jspdf;
         const element = document.getElementById("schedule-table-container");
         document
