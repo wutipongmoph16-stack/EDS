@@ -34,7 +34,7 @@
       .header-banner {
         background: linear-gradient(135deg, #1d3557 0%, #457b9d 100%);
         color: white;
-        padding: 12px 0;
+        padding: 10px 0;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       }
       .card-custom {
@@ -45,7 +45,7 @@
       }
       #schedule-table-container {
         background: white;
-        padding: 15px;
+        padding: 12px;
         border-radius: 8px;
       }
       .table-schedule {
@@ -53,14 +53,14 @@
         width: 100%;
         table-layout: fixed;
       }
-      /* Compact Row Padding for A4 Portrait fitting */
+      /* Super Compact Table Cell Specs */
       .table-schedule th,
       .table-schedule td {
-        border: 1px solid #111;
-        padding: 5px 6px;
+        border: 1px solid #222;
+        padding: 3px 5px !important;
         vertical-align: middle;
-        font-size: 13px;
-        line-height: 1.25;
+        font-size: 12.5px;
+        line-height: 1.15 !important;
         word-break: break-word;
         white-space: pre-wrap;
       }
@@ -69,74 +69,78 @@
         text-align: center;
         font-weight: 700;
         color: #1d3557;
-        padding: 6px;
+        padding: 5px !important;
       }
       .exec-name {
         font-weight: 700;
         color: #0d1b2a;
-        font-size: 13px;
+        font-size: 12.5px;
+        line-height: 1.1;
       }
       .exec-pos {
         font-size: 11px;
         color: #415a77;
+        line-height: 1.1;
       }
 
       .leave-table-header {
         background-color: #fff3cd;
         color: #856404;
         font-weight: bold;
-        padding: 6px;
-        font-size: 13px;
-        border: 1px solid #111;
+        padding: 4px;
+        font-size: 12px;
+        border: 1px solid #222;
+        border-bottom: none;
       }
       .leave-badge {
         background-color: #ffe5ec;
         color: #d90429;
         font-weight: bold;
-        padding: 2px 6px;
+        padding: 1px 5px;
         border-radius: 4px;
         display: inline-block;
-        font-size: 12px;
+        font-size: 11.5px;
       }
       .joint-exec-badge {
-        font-size: 11px;
+        font-size: 10.5px;
         background-color: #e0f2fe;
         color: #0369a1;
         border: 1px solid #bae6fd;
         padding: 1px 4px;
         border-radius: 3px;
-        margin-top: 2px;
+        margin-top: 1px;
         display: inline-block;
+        line-height: 1.1;
       }
       .table-footer-info {
-        font-size: 11.5px;
+        font-size: 11px;
         color: #555;
         font-weight: 600;
       }
       .table-dev-credit {
-        font-size: 10px;
+        font-size: 9.5px;
         color: #777;
         opacity: 0.45;
         letter-spacing: 0.3px;
       }
       .btn-mobile-touch {
-        padding: 6px 12px;
+        padding: 5px 10px;
         font-weight: 600;
         border-radius: 6px;
-        font-size: 13px;
+        font-size: 12.5px;
       }
     </style>
   </head>
   <body>
     <!-- Header Banner -->
-    <div class="header-banner mb-3">
+    <div class="header-banner mb-2">
       <div class="container d-flex justify-content-between align-items-center">
         <div>
           <h5 class="mb-0 fw-bold">
             <i class="fa-solid fa-calendar-days me-2"></i
             >ตารางงานประจำวันผู้บริหาร
           </h5>
-          <small class="text-light">สสจ.ลพบุรี</small>
+          <small class="text-light">สสจ.ลพบุรี (ตารางงานวันถัดไป)</small>
         </div>
         <div>
           <button
@@ -149,9 +153,9 @@
       </div>
     </div>
 
-    <div class="container mb-5 px-2 px-md-3">
+    <div class="container mb-4 px-2 px-md-3">
       <!-- Controls Card -->
-      <div class="card card-custom p-3 mb-3">
+      <div class="card card-custom p-2 mb-2">
         <div class="row g-2 align-items-center">
           <div class="col-md-3">
             <label class="form-label fw-bold mb-1 small"
@@ -161,11 +165,11 @@
             <input
               type="date"
               id="search-date"
-              class="form-control"
+              class="form-control form-control-sm"
               onchange="loadSchedule()"
             />
           </div>
-          <div class="col-md-9 pt-2 pt-md-0">
+          <div class="col-md-9 pt-1 pt-md-0">
             <div class="d-flex flex-wrap gap-2">
               <button
                 class="btn btn-primary btn-mobile-touch"
@@ -183,20 +187,20 @@
                 class="btn btn-outline-success btn-mobile-touch"
                 onclick="exportImage169()"
               >
-                <i class="fa-solid fa-file-image me-1"></i> รูปภาพ
+                <i class="fa-solid fa-file-image me-1"></i> PNG
               </button>
               <button
                 class="btn btn-outline-danger btn-mobile-touch"
                 onclick="exportPDF()"
               >
-                <i class="fa-solid fa-file-pdf me-1"></i> ไฟล์ PDF
+                <i class="fa-solid fa-file-pdf me-1"></i> PDF (A4 แนวตั้ง)
               </button>
             </div>
           </div>
         </div>
 
         <!-- Exec Filter Row -->
-        <div class="row mt-2 pt-2 border-top">
+        <div class="row mt-2 pt-1 border-top">
           <div class="col-12">
             <label class="form-label fw-bold small text-muted mb-1"
               ><i class="fa-solid fa-filter me-1"></i>
@@ -213,14 +217,14 @@
         </div>
       </div>
 
-      <!-- Schedule Table Container (A4 Printable Area) -->
-      <div class="card card-custom p-2 p-md-3">
+      <!-- Schedule Table Container (A4 Portrait Fit Area) -->
+      <div class="card card-custom p-2">
         <div id="schedule-table-container">
           <div class="text-center mb-2">
-            <h6 class="fw-bold mb-1">
+            <h6 class="fw-bold mb-0" style="font-size: 15px">
               กำหนดการประชุม / ภารกิจของ นายแพทย์สาธารณสุขจังหวัดลพบุรี
             </h6>
-            <p class="fw-bold mb-1 text-secondary small">
+            <p class="fw-bold mb-0 text-secondary" style="font-size: 12px">
               และการมอบหมายงานให้รองนายแพทย์สาธารณสุขจังหวัดลพบุรี ปฏิบัติราชการ
             </p>
             <p class="fs-6 text-primary fw-bold mb-0" id="display-date-str">
@@ -233,12 +237,12 @@
             <table class="table-schedule mb-2" id="main-table">
               <thead>
                 <tr>
-                  <th style="width: 26%">ชื่อ-สกุล ตำแหน่ง</th>
-                  <th style="width: 12%">เวลา</th>
-                  <th style="width: 32%">ภารกิจ</th>
+                  <th style="width: 25%">ชื่อ-สกุล ตำแหน่ง</th>
+                  <th style="width: 11%">เวลา</th>
+                  <th style="width: 34%">ภารกิจ</th>
                   <th style="width: 15%">สถานที่</th>
                   <th style="width: 15%">การแต่งกาย / หมายเหตุ</th>
-                  <th class="no-export" style="width: 65px">จัดการ</th>
+                  <th class="no-export" style="width: 60px">จัดการ</th>
                 </tr>
               </thead>
               <tbody id="schedule-tbody">
@@ -271,7 +275,7 @@
           </div>
 
           <!-- Developer Credit Centered Bottom -->
-          <div class="text-center mt-2 pt-1 border-top">
+          <div class="text-center mt-1 pt-1 border-top">
             <span class="table-dev-credit" id="footer-dev-credit"></span>
           </div>
         </div>
@@ -282,7 +286,7 @@
     <div class="modal fade" id="eventModal" tabindex="-1">
       <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
-          <div class="modal-header bg-light">
+          <div class="modal-header bg-light py-2">
             <h6 class="modal-title fw-bold" id="modalTitle">
               <i class="fa-solid fa-calendar-plus me-2"></i>บันทึกภารกิจ
             </h6>
@@ -296,71 +300,73 @@
             <form id="eventForm">
               <input type="hidden" id="event-id" />
 
-              <div class="mb-3">
-                <label class="form-label fw-bold small"
+              <div class="mb-2">
+                <label class="form-label fw-bold small mb-1"
                   >เลือกผู้บริหารที่เข้าร่วม (เลือกได้หลายท่าน):</label
                 >
                 <div
                   id="executives-checkbox-group"
                   class="row g-2 p-2 border rounded bg-light"
-                  style="max-height: 200px; overflow-y: auto"
+                  style="max-height: 180px; overflow-y: auto"
                 ></div>
               </div>
 
-              <div class="row g-3 mb-3">
+              <div class="row g-2 mb-2">
                 <div class="col-md-6">
-                  <label class="form-label fw-bold small">วันที่:</label>
+                  <label class="form-label fw-bold small mb-1">วันที่:</label>
                   <input
                     type="date"
                     id="event-date"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     required
                   />
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label fw-bold small"
+                  <label class="form-label fw-bold small mb-1"
                     >เวลาเริ่มภารกิจ:</label
                   >
                   <input
                     type="time"
                     id="start-time"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     required
                   />
                 </div>
               </div>
 
-              <div class="mb-3">
-                <label class="form-label fw-bold small"
+              <div class="mb-2">
+                <label class="form-label fw-bold small mb-1"
                   >ภารกิจ / เรื่องประชุม:</label
                 >
                 <textarea
                   id="event-title"
-                  class="form-control"
+                  class="form-control form-control-sm"
                   rows="2"
                   placeholder="กรอกรายละเอียดภารกิจ..."
                   required
                 ></textarea>
               </div>
 
-              <div class="row g-3 mb-3">
+              <div class="row g-2 mb-2">
                 <div class="col-md-6">
-                  <label class="form-label fw-bold small">สถานที่:</label>
+                  <label class="form-label fw-bold small mb-1">สถานที่:</label>
                   <input
                     type="text"
                     id="event-location"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     list="location-list"
                     placeholder="เลือกหรือพิมพ์สถานที่..."
                   />
                   <datalist id="location-list"></datalist>
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label fw-bold small">การแต่งกาย:</label>
+                  <label class="form-label fw-bold small mb-1"
+                    >การแต่งกาย:</label
+                  >
                   <input
                     type="text"
                     id="event-dress"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     list="dress-list"
                     placeholder="เลือกหรือพิมพ์การแต่งกาย..."
                   />
@@ -368,18 +374,18 @@
                 </div>
               </div>
 
-              <div class="mb-3">
-                <label class="form-label fw-bold small">หมายเหตุ:</label>
+              <div class="mb-2">
+                <label class="form-label fw-bold small mb-1">หมายเหตุ:</label>
                 <input
                   type="text"
                   id="event-remark"
-                  class="form-control"
+                  class="form-control form-control-sm"
                   placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)"
                 />
               </div>
             </form>
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer py-1">
             <button
               type="button"
               class="btn btn-secondary btn-sm"
@@ -403,7 +409,7 @@
     <div class="modal fade" id="leaveModal" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header bg-warning text-dark">
+          <div class="modal-header bg-warning text-dark py-2">
             <h6 class="modal-title fw-bold">
               <i class="fa-solid fa-user-slash me-2"></i>บันทึกการลา / ไปราชการ
             </h6>
@@ -415,29 +421,35 @@
           </div>
           <div class="modal-body">
             <form id="leaveForm">
-              <div class="mb-3">
-                <label class="form-label fw-bold small">เลือกผู้บริหาร:</label>
+              <div class="mb-2">
+                <label class="form-label fw-bold small mb-1"
+                  >เลือกผู้บริหาร:</label
+                >
                 <select
                   id="leave-exec-id"
-                  class="form-select"
+                  class="form-select form-select-sm"
                   required
                 ></select>
               </div>
-              <div class="mb-3">
-                <label class="form-label fw-bold small">วันที่:</label>
+              <div class="mb-2">
+                <label class="form-label fw-bold small mb-1">วันที่:</label>
                 <input
                   type="date"
                   id="leave-date"
-                  class="form-control"
+                  class="form-control form-control-sm"
                   required
                 />
               </div>
-              <div class="row g-2 mb-3">
+              <div class="row g-2 mb-2">
                 <div class="col-md-7">
-                  <label class="form-label fw-bold small"
+                  <label class="form-label fw-bold small mb-1"
                     >สถานะการลา/ปฏิบัติงาน:</label
                   >
-                  <select id="leave-type" class="form-select" required>
+                  <select
+                    id="leave-type"
+                    class="form-select form-select-sm"
+                    required
+                  >
                     <option value="ลาป่วย">ลาป่วย</option>
                     <option value="ลากิจ">ลากิจ</option>
                     <option value="ลาพักผ่อน">ลาพักผ่อน</option>
@@ -448,28 +460,32 @@
                   </select>
                 </div>
                 <div class="col-md-5">
-                  <label class="form-label fw-bold small">ช่วงเวลา:</label>
-                  <select id="leave-period" class="form-select" required>
+                  <label class="form-label fw-bold small mb-1">ช่วงเวลา:</label>
+                  <select
+                    id="leave-period"
+                    class="form-select form-select-sm"
+                    required
+                  >
                     <option value="เต็มวัน">เต็มวัน</option>
                     <option value="ครึ่งเช้า">ครึ่งเช้า</option>
                     <option value="ครึ่งบ่าย">ครึ่งบ่าย</option>
                   </select>
                 </div>
               </div>
-              <div class="mb-3">
-                <label class="form-label fw-bold small"
+              <div class="mb-2">
+                <label class="form-label fw-bold small mb-1"
                   >รายละเอียดเพิ่มเติม:</label
                 >
                 <input
                   type="text"
                   id="leave-remark"
-                  class="form-control"
+                  class="form-control form-control-sm"
                   placeholder="ระบุรายละเอียดเพิ่มเติม"
                 />
               </div>
             </form>
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer py-1">
             <button
               type="button"
               class="btn btn-secondary btn-sm"
@@ -564,7 +580,6 @@
           const res = await fetch(url, { method: "GET", redirect: "follow" });
           appData = await res.json();
 
-          // Update Dynamic Config Texts from Backend API
           document.getElementById("footer-publisher-text").innerText =
             `ผู้จัดทำข้อมูล: ${appData.publisher || "สำนักงานเลขาฯ"}`;
           document.getElementById("footer-dev-credit").innerText =
@@ -642,12 +657,12 @@
             const remarkText = execLeave.remark ? ` - ${execLeave.remark}` : "";
 
             tr.innerHTML = `
-            <td style="width: 26%;"><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>
-            <td style="width: 12%;" class="text-center fw-bold text-danger">${execLeave.period || "เต็มวัน"}</td>
-            <td style="width: 50%;" colspan="3">
+            <td style="width: 25%;"><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>
+            <td style="width: 11%;" class="text-center fw-bold text-danger">${execLeave.period || "เต็มวัน"}</td>
+            <td style="width: 64%;" colspan="3">
               <span class="leave-badge"><i class="fa-solid fa-user-clock me-1"></i> [ ${execLeave.status_type}${periodStr} ]</span> ${remarkText}
             </td>
-            <td class="no-export text-center" style="width: 65px;">
+            <td class="no-export text-center" style="width: 60px;">
               <button class="btn btn-sm btn-outline-danger py-0 px-1" title="ยกเลิกสถานะ" onclick="clearLeaveConfirm('${execLeave.leave_id}')"><i class="fa-solid fa-circle-xmark"></i></button>
             </td>
           `;
@@ -985,9 +1000,9 @@
         wrap.style.position = "absolute";
         wrap.style.left = "-9999px";
         wrap.style.top = "-9999px";
-        wrap.style.width = "1200px";
+        wrap.style.width = "1050px";
         wrap.style.backgroundColor = "#ffffff";
-        wrap.style.padding = "25px";
+        wrap.style.padding = "15px";
         wrap.style.boxSizing = "border-box";
 
         wrap.appendChild(clone);
@@ -1011,7 +1026,7 @@
         });
       }
 
-      // A4 Portrait Export Engine (Single Page Portrait Fitting)
+      // A4 Portrait Fitting PDF Engine
       function exportPDF() {
         updateDownloadTimestamp();
         const { jsPDF } = window.jspdf;
@@ -1023,10 +1038,10 @@
         html2canvas(element, { scale: 2.5 }).then((canvas) => {
           const imgData = canvas.toDataURL("image/png");
           const pdf = new jsPDF("p", "mm", "a4"); // A4 Portrait
-          const imgWidth = 198; // A4 Portrait 210mm - 12mm margins
-          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+          const pdfWidth = 198; // 210mm - 12mm margins
+          const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-          pdf.addImage(imgData, "PNG", 6, 8, imgWidth, imgHeight);
+          pdf.addImage(imgData, "PNG", 6, 6, pdfWidth, pdfHeight);
           pdf.save(
             `ตารางงานผู้บริหาร_${document.getElementById("search-date").value}.pdf`,
           );
