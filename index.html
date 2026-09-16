@@ -45,7 +45,7 @@
       }
       #schedule-table-container {
         background: white;
-        padding: 20px;
+        padding: 25px;
         border-radius: 8px;
       }
       .table-schedule {
@@ -55,7 +55,7 @@
       .table-schedule th,
       .table-schedule td {
         border: 1px solid #111;
-        padding: 8px 10px;
+        padding: 9px 10px;
         vertical-align: middle;
         font-size: 14.5px;
       }
@@ -82,10 +82,23 @@
         display: inline-block;
         border: 1px dashed #d90429;
       }
+      .joint-exec-badge {
+        font-size: 12px;
+        background-color: #e0f2fe;
+        color: #0369a1;
+        border: 1px solid #bae6fd;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-top: 4px;
+        display: inline-block;
+      }
       .btn-mobile-touch {
         padding: 8px 14px;
         font-weight: 600;
         border-radius: 8px;
+      }
+      .row-highlight {
+        background-color: #f0f9ff !important;
       }
     </style>
   </head>
@@ -145,7 +158,7 @@
                 class="btn btn-outline-success btn-mobile-touch"
                 onclick="exportImage169()"
               >
-                <i class="fa-solid fa-file-image me-1"></i> PNG (16:9)
+                <i class="fa-solid fa-file-image me-1"></i> PNG (HD)
               </button>
               <button
                 class="btn btn-outline-danger btn-mobile-touch"
@@ -156,9 +169,26 @@
             </div>
           </div>
         </div>
+
+        <!-- Exec Filter Row -->
+        <div class="row mt-3 pt-2 border-top">
+          <div class="col-12">
+            <label class="form-label fw-bold small text-muted mb-1"
+              ><i class="fa-solid fa-filter me-1"></i>
+              กรองดูภารกิจเฉพาะผู้บริหาร / ดูงานที่ไปร่วมกัน:</label
+            >
+            <select
+              id="filter-exec-id"
+              class="form-select"
+              onchange="renderScheduleTable()"
+            >
+              <option value="">-- แสดงผู้บริหารทุกท่าน (ดูภาพรวม) --</option>
+            </select>
+          </div>
+        </div>
       </div>
 
-      <!-- Schedule Table -->
+      <!-- Schedule Table Card -->
       <div class="card card-custom p-2 p-md-4">
         <div id="schedule-table-container">
           <div class="text-center mb-3">
@@ -177,16 +207,16 @@
             <table class="table-schedule" id="main-table">
               <thead>
                 <tr>
-                  <th style="width: 25%">ชื่อ-สกุล ตำแหน่ง</th>
+                  <th style="width: 24%">ชื่อ-สกุล ตำแหน่ง</th>
                   <th style="width: 12%">เวลา</th>
-                  <th style="width: 32%">ภารกิจ</th>
+                  <th style="width: 33%">ภารกิจ</th>
                   <th style="width: 16%">สถานที่</th>
                   <th style="width: 15%">การแต่งกาย / หมายเหตุ</th>
                   <th class="no-export" style="width: 70px">จัดการ</th>
                 </tr>
               </thead>
               <tbody id="schedule-tbody">
-                <!-- Render by JS -->
+                <!-- JS Render -->
               </tbody>
             </table>
           </div>
@@ -211,7 +241,6 @@
           <div class="modal-body">
             <form id="eventForm">
               <input type="hidden" id="event-id" />
-              <input type="hidden" id="end-time" value="" />
 
               <div class="mb-3">
                 <label class="form-label fw-bold"
@@ -415,8 +444,7 @@
         loadSchedule();
       });
 
-      // Helper: Format Time String Cleanly (09.00 น.)
-      function cleanTime(raw) {
+      function cleanTimeDisplay(raw) {
         if (!raw) return "-";
         if (raw.includes("T")) {
           const d = new Date(raw);
@@ -427,6 +455,17 @@
         let t = raw.replace(":", ".");
         if (!t.includes("น.")) t += " น.";
         return t;
+      }
+
+      // Convert "09.00 น." back to "09:00" for input type="time"
+      function timeToInputValue(timeStr) {
+        if (!timeStr) return "";
+        let clean = timeStr.replace(" น.", "").trim();
+        let parts = clean.split(".");
+        if (parts.length === 2) {
+          return `${parts[0].padStart(2, "0")}:${parts[1].padStart(2, "0")}`;
+        }
+        return clean;
       }
 
       async function loadSchedule() {
@@ -441,6 +480,7 @@
           const res = await fetch(url, { method: "GET", redirect: "follow" });
           appData = await res.json();
 
+          populateExecFilterOptions();
           renderScheduleTable();
           populateDatalists();
           Swal.close();
@@ -448,6 +488,18 @@
           console.error(err);
           Swal.fire("ข้อผิดพลาด", "ไม่สามารถเชื่อมต่อฐานข้อมูลได้", "error");
         }
+      }
+
+      function populateExecFilterOptions() {
+        const select = document.getElementById("filter-exec-id");
+        const currentVal = select.value;
+        select.innerHTML = `<option value="">-- แสดงผู้บริหารทุกท่าน (ดูภาพรวม) --</option>`;
+        if (appData.executives) {
+          appData.executives.forEach((e) => {
+            select.innerHTML += `<option value="${e.exec_id}">${e.name} (${e.position})</option>`;
+          });
+        }
+        select.value = currentVal;
       }
 
       function renderScheduleTable() {
@@ -461,6 +513,8 @@
         document.getElementById("display-date-str").innerText =
           `ประจำวัน${thaiDateStr}`;
 
+        const selectedExecFilter =
+          document.getElementById("filter-exec-id").value;
         const tbody = document.getElementById("schedule-tbody");
         tbody.innerHTML = "";
 
@@ -469,7 +523,12 @@
           return;
         }
 
-        appData.executives.forEach((exec) => {
+        // Filter list if selected
+        const displayExecs = selectedExecFilter
+          ? appData.executives.filter((e) => e.exec_id === selectedExecFilter)
+          : appData.executives;
+
+        displayExecs.forEach((exec) => {
           const execEvents = (appData.events || []).filter((ev) =>
             ev.assigned_exec_ids.includes(exec.exec_id),
           );
@@ -510,15 +569,32 @@
                 nameTd = `<td rowspan="${execEvents.length}"><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>`;
               }
 
-              const timeDisplay = cleanTime(ev.start_time);
+              const timeDisplay = cleanTimeDisplay(ev.start_time);
               const dressRemark = [ev.dress_code, ev.remark]
                 .filter(Boolean)
                 .join(" / ");
 
+              // Check Joint Attendees
+              const jointExecNames = appData.executives
+                .filter(
+                  (e) =>
+                    ev.assigned_exec_ids.includes(e.exec_id) &&
+                    e.exec_id !== exec.exec_id,
+                )
+                .map((e) => e.name);
+
+              let jointBadge = "";
+              if (jointExecNames.length > 0) {
+                jointBadge = `<div class="joint-exec-badge"><i class="fa-solid fa-users me-1"></i>ไปร่วมกับ: ${jointExecNames.join(", ")}</div>`;
+              }
+
               tr.innerHTML = `
               ${nameTd}
               <td class="text-center fw-bold">${timeDisplay}</td>
-              <td>${ev.title}</td>
+              <td>
+                <div>${ev.title}</div>
+                ${jointBadge}
+              </td>
               <td>${ev.location || "-"}</td>
               <td>${dressRemark || "-"}</td>
               <td class="no-export text-center">
@@ -629,6 +705,27 @@
           .join("");
       }
 
+      async function editEvent(eventId) {
+        if (!(await checkAdminPass())) return;
+        const ev = appData.events.find((e) => e.event_id === eventId);
+        if (!ev) return;
+
+        document.getElementById("event-id").value = ev.event_id;
+        document.getElementById("event-date").value = ev.event_date;
+
+        // Auto Fill Previous Time cleanly
+        document.getElementById("start-time").value = timeToInputValue(
+          ev.start_time,
+        );
+        document.getElementById("event-title").value = ev.title;
+        document.getElementById("event-location").value = ev.location;
+        document.getElementById("event-dress").value = ev.dress_code;
+        document.getElementById("event-remark").value = ev.remark;
+
+        renderExecCheckboxes(ev.assigned_exec_ids);
+        new bootstrap.Modal(document.getElementById("eventModal")).show();
+      }
+
       async function submitEventForm() {
         const selectedExecs = Array.from(
           document.querySelectorAll(".exec-cb:checked"),
@@ -671,7 +768,6 @@
             body: JSON.stringify(payload),
           });
 
-          // Close Modal & Show Success
           const modalEl = document.getElementById("eventModal");
           const modalObj = bootstrap.Modal.getInstance(modalEl);
           if (modalObj) modalObj.hide();
@@ -681,7 +777,6 @@
             loadSchedule();
           }, 1200);
         } catch (err) {
-          console.error(err);
           Swal.fire("ข้อผิดพลาด", "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้", "error");
         }
       }
@@ -723,25 +818,6 @@
         } catch (err) {
           Swal.fire("ข้อผิดพลาด", "บันทึกไม่สำเร็จ", "error");
         }
-      }
-
-      async function editEvent(eventId) {
-        if (!(await checkAdminPass())) return;
-        const ev = appData.events.find((e) => e.event_id === eventId);
-        if (!ev) return;
-
-        document.getElementById("event-id").value = ev.event_id;
-        document.getElementById("event-date").value = ev.event_date;
-
-        let tVal = ev.start_time.replace(" น.", "").replace(".", ":");
-        document.getElementById("start-time").value = tVal;
-        document.getElementById("event-title").value = ev.title;
-        document.getElementById("event-location").value = ev.location;
-        document.getElementById("event-dress").value = ev.dress_code;
-        document.getElementById("event-remark").value = ev.remark;
-
-        renderExecCheckboxes(ev.assigned_exec_ids);
-        new bootstrap.Modal(document.getElementById("eventModal")).show();
       }
 
       async function clearLeaveConfirm(leaveId) {
@@ -790,7 +866,7 @@
         }
       }
 
-      // High-Resolution 16:9 PNG Export Engine
+      // Auto Dynamic Height Export Engine (Fix Bottom Cut-off)
       function exportImage169() {
         const srcElement = document.getElementById("schedule-table-container");
         Swal.fire({
@@ -798,19 +874,16 @@
           didOpen: () => Swal.showLoading(),
         });
 
-        // Hide Action Buttons temporary
         document
           .querySelectorAll(".no-export")
           .forEach((el) => (el.style.display = "none"));
 
-        // Clone Node to Offscreen HD Container
         const clone = srcElement.cloneNode(true);
         const wrap = document.createElement("div");
         wrap.style.position = "absolute";
         wrap.style.left = "-9999px";
         wrap.style.top = "-9999px";
-        wrap.style.width = "1920px";
-        wrap.style.height = "1080px";
+        wrap.style.width = "1600px";
         wrap.style.backgroundColor = "#ffffff";
         wrap.style.padding = "40px";
         wrap.style.boxSizing = "border-box";
@@ -822,8 +895,6 @@
           scale: 2,
           useCORS: true,
           logging: false,
-          width: 1920,
-          height: 1080,
         }).then((canvas) => {
           const link = document.createElement("a");
           link.download = `ตารางงานผู้บริหาร_${document.getElementById("search-date").value}.png`;
