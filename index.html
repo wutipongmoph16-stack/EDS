@@ -54,7 +54,7 @@
       }
       .table-schedule th,
       .table-schedule td {
-        border: 1px solid #222;
+        border: 1px solid #111;
         padding: 8px 10px;
         vertical-align: middle;
         font-size: 14.5px;
@@ -408,7 +408,6 @@
       };
 
       document.addEventListener("DOMContentLoaded", () => {
-        // Set Default Date to TOMORROW
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         document.getElementById("search-date").valueAsDate = tomorrow;
@@ -416,7 +415,20 @@
         loadSchedule();
       });
 
-      // Handle Fetching Data with Redirection Handling
+      // Helper: Format Time String Cleanly (09.00 น.)
+      function cleanTime(raw) {
+        if (!raw) return "-";
+        if (raw.includes("T")) {
+          const d = new Date(raw);
+          const hrs = String(d.getHours()).padStart(2, "0");
+          const mins = String(d.getMinutes()).padStart(2, "0");
+          return `${hrs}.${mins} น.`;
+        }
+        let t = raw.replace(":", ".");
+        if (!t.includes("น.")) t += " น.";
+        return t;
+      }
+
       async function loadSchedule() {
         const targetDate = document.getElementById("search-date").value;
         Swal.fire({
@@ -434,11 +446,7 @@
           Swal.close();
         } catch (err) {
           console.error(err);
-          Swal.fire(
-            "ข้อผิดพลาด",
-            "ไม่สามารถเชื่อมต่อฐานข้อมูลได้ กรุณาตรวจสอบการ Deploy บน GAS",
-            "error",
-          );
+          Swal.fire("ข้อผิดพลาด", "ไม่สามารถเชื่อมต่อฐานข้อมูลได้", "error");
         }
       }
 
@@ -457,7 +465,7 @@
         tbody.innerHTML = "";
 
         if (!appData.executives || appData.executives.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted p-4">ไม่พบข้อมูลรายชื่อผู้บริหารในแท็บ Executives หรือ API ขัดข้อง</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted p-4">ไม่พบรายชื่อผู้บริหาร</td></tr>`;
           return;
         }
 
@@ -502,14 +510,14 @@
                 nameTd = `<td rowspan="${execEvents.length}"><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>`;
               }
 
-              const timeStr = `${ev.start_time} น.`;
+              const timeDisplay = cleanTime(ev.start_time);
               const dressRemark = [ev.dress_code, ev.remark]
                 .filter(Boolean)
                 .join(" / ");
 
               tr.innerHTML = `
               ${nameTd}
-              <td class="text-center fw-bold">${timeStr}</td>
+              <td class="text-center fw-bold">${timeDisplay}</td>
               <td>${ev.title}</td>
               <td>${ev.location || "-"}</td>
               <td>${dressRemark || "-"}</td>
@@ -557,16 +565,24 @@
           showCancelButton: true,
         });
         if (password) {
-          const res = await fetch(
-            `${GAS_API_URL}?action=verifyAdmin&password=${password}`,
-            { method: "GET", redirect: "follow" },
-          );
-          const data = await res.json();
-          if (data.success) {
-            currentAdminPass = password;
-            return true;
-          } else {
-            Swal.fire("ผิดพลาด", "รหัสผ่านไม่ถูกต้อง", "error");
+          try {
+            const res = await fetch(
+              `${GAS_API_URL}?action=verifyAdmin&password=${password}`,
+              { method: "GET", redirect: "follow" },
+            );
+            const data = await res.json();
+            if (data.success) {
+              currentAdminPass = password;
+              return true;
+            } else {
+              Swal.fire("ผิดพลาด", "รหัสผ่านไม่ถูกต้อง", "error");
+            }
+          } catch (e) {
+            Swal.fire(
+              "ผิดพลาด",
+              "ไม่สามารถเชื่อมต่อระบบยืนยันตัวตนได้",
+              "error",
+            );
           }
         }
         return false;
@@ -593,7 +609,7 @@
       function renderExecCheckboxes(selectedIds) {
         const container = document.getElementById("executives-checkbox-group");
         if (!appData.executives || appData.executives.length === 0) {
-          container.innerHTML = `<div class="text-danger p-2">ไม่พบรายชื่อผู้บริหาร กรุณาตรวจสอบแท็บ Executives ใน Google Sheets</div>`;
+          container.innerHTML = `<div class="text-danger p-2">ไม่พบรายชื่อผู้บริหาร</div>`;
           return;
         }
 
@@ -622,6 +638,9 @@
           return;
         }
 
+        const rawTime = document.getElementById("start-time").value;
+        const formattedTime = rawTime ? rawTime.replace(":", ".") + " น." : "";
+
         const payload = {
           action: "saveEvent",
           password: currentAdminPass,
@@ -629,8 +648,8 @@
             event_id: document.getElementById("event-id").value,
             assigned_exec_ids: selectedExecs,
             event_date: document.getElementById("event-date").value,
-            start_time: document.getElementById("start-time").value,
-            end_time: document.getElementById("end-time").value || "",
+            start_time: formattedTime,
+            end_time: "",
             title: document.getElementById("event-title").value,
             location: document.getElementById("event-location").value,
             dress_code: document.getElementById("event-dress").value,
@@ -640,20 +659,30 @@
 
         Swal.fire({
           title: "กำลังบันทึกและซิงก์ ปฏิทิน...",
+          allowOutsideClick: false,
           didOpen: () => Swal.showLoading(),
         });
-        const res = await fetch(GAS_API_URL, {
-          method: "POST",
-          body: JSON.stringify(payload),
-        });
-        const data = await res.json();
 
-        if (data.success) {
-          bootstrap.Modal.getInstance(
-            document.getElementById("eventModal"),
-          ).hide();
-          Swal.fire("สำเร็จ", "บันทึกข้อมูลเรียบร้อย", "success");
-          loadSchedule();
+        try {
+          await fetch(GAS_API_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          // Close Modal & Show Success
+          const modalEl = document.getElementById("eventModal");
+          const modalObj = bootstrap.Modal.getInstance(modalEl);
+          if (modalObj) modalObj.hide();
+
+          setTimeout(() => {
+            Swal.fire("สำเร็จ", "บันทึกข้อมูลเรียบร้อยแล้ว", "success");
+            loadSchedule();
+          }, 1200);
+        } catch (err) {
+          console.error(err);
+          Swal.fire("ข้อผิดพลาด", "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้", "error");
         }
       }
 
@@ -670,21 +699,29 @@
         };
 
         Swal.fire({
-          title: "กำลังบันทึกสถานะการลา...",
+          title: "กำลังบันทึกสถานะ...",
+          allowOutsideClick: false,
           didOpen: () => Swal.showLoading(),
         });
-        const res = await fetch(GAS_API_URL, {
-          method: "POST",
-          body: JSON.stringify(payload),
-        });
-        const data = await res.json();
 
-        if (data.success) {
-          bootstrap.Modal.getInstance(
-            document.getElementById("leaveModal"),
-          ).hide();
-          Swal.fire("สำเร็จ", "บันทึกสถานะการลาเรียบร้อย", "success");
-          loadSchedule();
+        try {
+          await fetch(GAS_API_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          const modalEl = document.getElementById("leaveModal");
+          const modalObj = bootstrap.Modal.getInstance(modalEl);
+          if (modalObj) modalObj.hide();
+
+          setTimeout(() => {
+            Swal.fire("สำเร็จ", "บันทึกสถานะการลาเรียบร้อย", "success");
+            loadSchedule();
+          }, 1200);
+        } catch (err) {
+          Swal.fire("ข้อผิดพลาด", "บันทึกไม่สำเร็จ", "error");
         }
       }
 
@@ -695,7 +732,9 @@
 
         document.getElementById("event-id").value = ev.event_id;
         document.getElementById("event-date").value = ev.event_date;
-        document.getElementById("start-time").value = ev.start_time;
+
+        let tVal = ev.start_time.replace(" น.", "").replace(".", ":");
+        document.getElementById("start-time").value = tVal;
         document.getElementById("event-title").value = ev.title;
         document.getElementById("event-location").value = ev.location;
         document.getElementById("event-dress").value = ev.dress_code;
@@ -716,13 +755,15 @@
         if (confirm.isConfirmed) {
           await fetch(GAS_API_URL, {
             method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               action: "clearLeaveStatus",
               password: currentAdminPass,
               leave_id: leaveId,
             }),
           });
-          loadSchedule();
+          setTimeout(loadSchedule, 1000);
         }
       }
 
@@ -737,59 +778,74 @@
         if (confirm.isConfirmed) {
           await fetch(GAS_API_URL, {
             method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               action: "deleteEvent",
               password: currentAdminPass,
               event_id: eventId,
             }),
           });
-          loadSchedule();
+          setTimeout(loadSchedule, 1000);
         }
       }
 
+      // High-Resolution 16:9 PNG Export Engine
       function exportImage169() {
-        const element = document.getElementById("schedule-table-container");
+        const srcElement = document.getElementById("schedule-table-container");
+        Swal.fire({
+          title: "กำลังสร้างไฟล์รูปภาพ HD...",
+          didOpen: () => Swal.showLoading(),
+        });
+
+        // Hide Action Buttons temporary
         document
           .querySelectorAll(".no-export")
           .forEach((el) => (el.style.display = "none"));
 
-        html2canvas(element, { scale: 2 }).then((canvas) => {
-          const outputCanvas = document.createElement("canvas");
-          outputCanvas.width = 1920;
-          outputCanvas.height = 1080;
-          const ctx = outputCanvas.getContext("2d");
+        // Clone Node to Offscreen HD Container
+        const clone = srcElement.cloneNode(true);
+        const wrap = document.createElement("div");
+        wrap.style.position = "absolute";
+        wrap.style.left = "-9999px";
+        wrap.style.top = "-9999px";
+        wrap.style.width = "1920px";
+        wrap.style.height = "1080px";
+        wrap.style.backgroundColor = "#ffffff";
+        wrap.style.padding = "40px";
+        wrap.style.boxSizing = "border-box";
 
-          ctx.fillStyle = "#ffffff";
-          ctx.fillRect(0, 0, 1920, 1080);
+        wrap.appendChild(clone);
+        document.body.appendChild(wrap);
 
-          const scale = Math.min(1800 / canvas.width, 980 / canvas.height);
-          const w = canvas.width * scale;
-          const h = canvas.height * scale;
-          const x = (1920 - w) / 2;
-          const y = (1080 - h) / 2;
-
-          ctx.drawImage(canvas, x, y, w, h);
-
+        html2canvas(wrap, {
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          width: 1920,
+          height: 1080,
+        }).then((canvas) => {
           const link = document.createElement("a");
           link.download = `ตารางงานผู้บริหาร_${document.getElementById("search-date").value}.png`;
-          link.href = outputCanvas.toDataURL("image/png");
+          link.href = canvas.toDataURL("image/png", 1.0);
           link.click();
 
+          document.body.removeChild(wrap);
           document
             .querySelectorAll(".no-export")
             .forEach((el) => (el.style.display = ""));
+          Swal.close();
         });
       }
 
       function exportPDF() {
         const { jsPDF } = window.jspdf;
         const element = document.getElementById("schedule-table-container");
-
         document
           .querySelectorAll(".no-export")
           .forEach((el) => (el.style.display = "none"));
 
-        html2canvas(element, { scale: 2 }).then((canvas) => {
+        html2canvas(element, { scale: 2.5 }).then((canvas) => {
           const imgData = canvas.toDataURL("image/png");
           const pdf = new jsPDF("l", "mm", "a4");
           const imgWidth = 280;
