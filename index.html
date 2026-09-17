@@ -34,7 +34,7 @@
       .header-banner {
         background: linear-gradient(135deg, #1d3557 0%, #457b9d 100%);
         color: white;
-        padding: 8px 0;
+        padding: 6px 0;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       }
       .card-custom {
@@ -45,7 +45,7 @@
       }
       #schedule-table-container {
         background: white;
-        padding: 10px;
+        padding: 8px;
         border-radius: 6px;
       }
       .table-schedule {
@@ -54,33 +54,38 @@
         table-layout: fixed;
         margin-bottom: 0 !important;
       }
+
+      /* Ultra Tight Layout to eliminate extra spacing */
       .table-schedule th,
       .table-schedule td {
-        border: 1px solid #111;
-        padding: 1px 4px !important;
-        vertical-align: middle;
-        font-size: 11px;
+        border: 1px solid #222 !important;
+        padding: 1px 3px !important;
+        vertical-align: middle !important;
+        font-size: 10.5px !important;
         line-height: 1.05 !important;
         word-break: break-word;
         white-space: pre-wrap;
       }
       .table-schedule th {
-        background-color: #e2ece9;
+        background-color: #e2ece9 !important;
         text-align: center;
         font-weight: 700;
         color: #1d3557;
-        padding: 3px 2px !important;
+        padding: 2px 2px !important;
+        font-size: 11px !important;
       }
       .exec-name {
         font-weight: 700;
         color: #0d1b2a;
-        font-size: 11px;
+        font-size: 10.5px;
         line-height: 1;
+        margin: 0;
       }
       .exec-pos {
-        font-size: 9.5px;
+        font-size: 9px;
         color: #415a77;
         line-height: 1;
+        margin: 0;
       }
 
       .leave-table-header {
@@ -88,22 +93,22 @@
         color: #856404;
         font-weight: bold;
         padding: 2px 4px;
-        font-size: 11px;
-        border: 1px solid #111;
+        font-size: 10.5px;
+        border: 1px solid #222;
         border-bottom: none;
-        margin-top: 4px;
+        margin-top: 3px;
       }
       .leave-badge {
         background-color: #ffe5ec;
         color: #d90429;
         font-weight: bold;
-        padding: 0px 4px;
-        border-radius: 3px;
+        padding: 0px 3px;
+        border-radius: 2px;
         display: inline-block;
-        font-size: 10px;
+        font-size: 9.5px;
       }
       .joint-exec-badge {
-        font-size: 9px;
+        font-size: 8.5px;
         background-color: #e0f2fe;
         color: #0369a1;
         border: 1px solid #bae6fd;
@@ -117,24 +122,42 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 5px;
-        padding-top: 3px;
-        border-top: 1px solid #ddd;
-        font-size: 9.5px;
+        margin-top: 4px;
+        padding-top: 2px;
+        border-top: 1px solid #ccc;
+        font-size: 9px;
         color: #444;
         font-weight: 600;
       }
       .table-dev-credit {
-        font-size: 8.5px;
+        font-size: 8px;
         color: #666;
-        opacity: 0.75;
+        opacity: 0.8;
         text-align: center;
       }
       .btn-mobile-touch {
         padding: 4px 8px;
         font-weight: 600;
         border-radius: 5px;
-        font-size: 12px;
+        font-size: 11.5px;
+      }
+
+      /* Compact mode when generating exported documents */
+      .export-compact .table-schedule th,
+      .export-compact .table-schedule td {
+        padding: 0px 2px !important;
+        font-size: 10px !important;
+        line-height: 0.98 !important;
+      }
+      .export-compact .joint-exec-badge {
+        font-size: 8px !important;
+        padding: 0px 2px !important;
+      }
+      .export-compact .exec-name {
+        font-size: 10px !important;
+      }
+      .export-compact .exec-pos {
+        font-size: 8.5px !important;
       }
     </style>
   </head>
@@ -230,15 +253,15 @@
       <div class="card card-custom p-2">
         <div id="schedule-table-container">
           <div class="text-center mb-1">
-            <div class="fw-bold" style="font-size: 13px; color: #111">
+            <div class="fw-bold" style="font-size: 12.5px; color: #111">
               กำหนดการประชุม / ภารกิจของ นายแพทย์สาธารณสุขจังหวัดลพบุรี
             </div>
-            <div class="fw-bold text-secondary" style="font-size: 10.5px">
+            <div class="fw-bold text-secondary" style="font-size: 10px">
               และการมอบหมายงานให้รองนายแพทย์สาธารณสุขจังหวัดลพบุรี ปฏิบัติราชการ
             </div>
             <div
               class="text-primary fw-bold"
-              style="font-size: 12px"
+              style="font-size: 11.5px"
               id="display-date-str"
             >
               ประจำวัน...
@@ -251,8 +274,8 @@
               <thead>
                 <tr>
                   <th style="width: 25%">ชื่อ-สกุล ตำแหน่ง</th>
-                  <th style="width: 10%">เวลา</th>
-                  <th style="width: 35%">ภารกิจ</th>
+                  <th style="width: 9%">เวลา</th>
+                  <th style="width: 36%">ภารกิจ</th>
                   <th style="width: 15%">สถานที่</th>
                   <th style="width: 15%">การแต่งกาย / หมายเหตุ</th>
                   <th class="no-export" style="width: 50px">จัดการ</th>
@@ -692,8 +715,8 @@
 
             tr.innerHTML = `
             <td style="width: 25%;"><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>
-            <td style="width: 10%;" class="text-center fw-bold text-danger">${execLeave.period || "เต็มวัน"}</td>
-            <td style="width: 65%;" colspan="3">
+            <td style="width: 9%;" class="text-center fw-bold text-danger">${execLeave.period || "เต็มวัน"}</td>
+            <td style="width: 66%;" colspan="3">
               <span class="leave-badge"><i class="fa-solid fa-user-clock me-1"></i> [ ${execLeave.status_type}${periodStr} ]</span>${remarkText}
             </td>
             <td class="no-export text-center" style="width: 50px;">
@@ -1020,6 +1043,7 @@
         }
       }
 
+      /* Auto-Compact Export PNG Engine */
       function exportImage169() {
         updateDownloadTimestamp();
         const srcElement = document.getElementById("schedule-table-container");
@@ -1033,20 +1057,22 @@
           .forEach((el) => (el.style.display = "none"));
 
         const clone = srcElement.cloneNode(true);
+        clone.classList.add("export-compact");
+
         const wrap = document.createElement("div");
         wrap.style.position = "absolute";
         wrap.style.left = "-9999px";
         wrap.style.top = "-9999px";
-        wrap.style.width = "1000px";
+        wrap.style.width = "950px";
         wrap.style.backgroundColor = "#ffffff";
-        wrap.style.padding = "10px";
+        wrap.style.padding = "8px";
         wrap.style.boxSizing = "border-box";
 
         wrap.appendChild(clone);
         document.body.appendChild(wrap);
 
         html2canvas(wrap, {
-          scale: 2,
+          scale: 2.2,
           useCORS: true,
           logging: false,
         }).then((canvas) => {
@@ -1063,21 +1089,38 @@
         });
       }
 
+      /* Dynamic A4 Single Page PDF Engine */
       function exportPDF() {
         updateDownloadTimestamp();
         const { jsPDF } = window.jspdf;
-        const element = document.getElementById("schedule-table-container");
+        const srcElement = document.getElementById("schedule-table-container");
         document
           .querySelectorAll(".no-export")
           .forEach((el) => (el.style.display = "none"));
 
-        html2canvas(element, { scale: 2.2 }).then((canvas) => {
+        const clone = srcElement.cloneNode(true);
+        clone.classList.add("export-compact");
+
+        const wrap = document.createElement("div");
+        wrap.style.position = "absolute";
+        wrap.style.left = "-9999px";
+        wrap.style.top = "-9999px";
+        wrap.style.width = "900px";
+        wrap.style.backgroundColor = "#ffffff";
+        wrap.style.padding = "6px";
+        wrap.style.boxSizing = "border-box";
+
+        wrap.appendChild(clone);
+        document.body.appendChild(wrap);
+
+        html2canvas(wrap, { scale: 2.5 }).then((canvas) => {
           const imgData = canvas.toDataURL("image/png");
-          const pdf = new jsPDF("p", "mm", "a4");
-          const pdfWidth = 200;
+          const pdf = new jsPDF("p", "mm", "a4"); // A4 Portrait
+          const pdfWidth = 195; // 210mm - 15mm margins
           const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-          const maxHeight = 280;
+          // Strict Single Page Limit fit to 280mm
+          const maxHeight = 282;
           let finalWidth = pdfWidth;
           let finalHeight = pdfHeight;
           if (pdfHeight > maxHeight) {
@@ -1086,11 +1129,12 @@
           }
 
           const xOffset = (210 - finalWidth) / 2;
-          pdf.addImage(imgData, "PNG", xOffset, 5, finalWidth, finalHeight);
+          pdf.addImage(imgData, "PNG", xOffset, 4, finalWidth, finalHeight);
           pdf.save(
             `ตารางงานผู้บริหาร_${document.getElementById("search-date").value}.pdf`,
           );
 
+          document.body.removeChild(wrap);
           document
             .querySelectorAll(".no-export")
             .forEach((el) => (el.style.display = ""));
