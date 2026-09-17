@@ -59,12 +59,12 @@
       .table-schedule th,
       .table-schedule td {
         border: 1px solid #222 !important;
-        padding: 4px 6px !important; /* เพิ่ม Padding ให้มีพื้นที่หายใจ สวยงามพอดี */
+        padding: 4px 6px !important;
         vertical-align: middle !important;
         font-size: 11px !important;
-        line-height: 1.25 !important; /* ปรับ Spacing บรรทัดให้อ่านง่าย */
-        /* word-break: break-word;
-        white-space: pre-wrap; */
+        line-height: 1.25 !important;
+        word-break: break-word;
+        white-space: pre-wrap;
       }
 
       .table-schedule th {
@@ -76,7 +76,6 @@
         font-size: 11.5px !important;
       }
 
-      /* ชื่อ และ ตำแหน่งผู้บริหาร */
       .exec-name {
         font-weight: 700;
         color: #0d1b2a;
@@ -95,20 +94,20 @@
         background-color: #fff3cd;
         color: #856404;
         font-weight: bold;
-        padding: 2px 4px;
-        font-size: 10.5px;
+        padding: 3px 4px;
+        font-size: 11px;
         border: 1px solid #222;
         border-bottom: none;
-        margin-top: 3px;
+        margin-top: 5px;
       }
       .leave-badge {
         background-color: #ffe5ec;
         color: #d90429;
         font-weight: bold;
-        padding: 0px 3px;
-        border-radius: 2px;
+        padding: 1px 4px;
+        border-radius: 3px;
         display: inline-block;
-        font-size: 9.5px;
+        font-size: 10px;
       }
       .joint-exec-badge {
         font-size: 8.5px;
@@ -121,30 +120,6 @@
         display: inline-block;
         line-height: 1;
       }
-      .table-footer-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 4px;
-        padding-top: 2px;
-        border-top: 1px solid #ccc;
-        font-size: 9px;
-        color: #444;
-        font-weight: 600;
-      }
-      .table-dev-credit {
-        font-size: 8px;
-        color: #666;
-        opacity: 0.8;
-        text-align: center;
-      }
-      .btn-mobile-touch {
-        padding: 4px 8px;
-        font-weight: 600;
-        border-radius: 5px;
-        font-size: 11.5px;
-      }
-
       .table-footer-container {
         display: flex !important;
         justify-content: space-between !important;
@@ -165,23 +140,16 @@
         text-align: center !important;
         font-weight: 500 !important;
       }
-
-      /* Compact mode when generating exported documents */
-      .export-compact .table-schedule th,
-      .export-compact .table-schedule td {
-        padding: 0px 2px !important;
-        font-size: 10px !important;
-        line-height: 0.98 !important;
+      .btn-mobile-touch {
+        padding: 4px 8px;
+        font-weight: 600;
+        border-radius: 5px;
+        font-size: 11.5px;
       }
-      .export-compact .joint-exec-badge {
-        font-size: 8px !important;
-        padding: 0px 2px !important;
-      }
-      .export-compact .exec-name {
-        font-size: 10px !important;
-      }
-      .export-compact .exec-pos {
-        font-size: 8.5px !important;
+      .req-label::after {
+        content: " *";
+        color: #d90429;
+        font-weight: bold;
       }
     </style>
   </head>
@@ -358,12 +326,12 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form id="eventForm">
+            <form id="eventForm" novalidate>
               <input type="hidden" id="event-id" />
 
               <div class="mb-2">
-                <label class="form-label fw-bold small mb-1"
-                  >เลือกผู้บริหารที่เข้าร่วม (เลือกได้หลายท่าน):</label
+                <label class="form-label fw-bold small mb-1 req-label"
+                  >เลือกผู้บริหารที่เข้าร่วม (เลือกอย่างน้อย 1 ท่าน):</label
                 >
                 <div
                   id="executives-checkbox-group"
@@ -374,7 +342,9 @@
 
               <div class="row g-2 mb-2">
                 <div class="col-md-6">
-                  <label class="form-label fw-bold small mb-1">วันที่:</label>
+                  <label class="form-label fw-bold small mb-1 req-label"
+                    >วันที่:</label
+                  >
                   <input
                     type="date"
                     id="event-date"
@@ -383,7 +353,7 @@
                   />
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label fw-bold small mb-1"
+                  <label class="form-label fw-bold small mb-1 req-label"
                     >เวลาเริ่มภารกิจ:</label
                   >
                   <input
@@ -396,7 +366,7 @@
               </div>
 
               <div class="mb-2">
-                <label class="form-label fw-bold small mb-1"
+                <label class="form-label fw-bold small mb-1 req-label"
                   >ภารกิจ / เรื่องประชุม:</label
                 >
                 <textarea
@@ -481,9 +451,9 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form id="leaveForm">
+            <form id="leaveForm" novalidate>
               <div class="mb-2">
-                <label class="form-label fw-bold small mb-1"
+                <label class="form-label fw-bold small mb-1 req-label"
                   >เลือกผู้บริหาร:</label
                 >
                 <select
@@ -493,7 +463,9 @@
                 ></select>
               </div>
               <div class="mb-2">
-                <label class="form-label fw-bold small mb-1">วันที่:</label>
+                <label class="form-label fw-bold small mb-1 req-label"
+                  >วันที่:</label
+                >
                 <input
                   type="date"
                   id="leave-date"
@@ -503,7 +475,7 @@
               </div>
               <div class="row g-2 mb-2">
                 <div class="col-md-7">
-                  <label class="form-label fw-bold small mb-1"
+                  <label class="form-label fw-bold small mb-1 req-label"
                     >สถานะการลา/ปฏิบัติงาน:</label
                   >
                   <select
@@ -511,6 +483,7 @@
                     class="form-select form-select-sm"
                     required
                   >
+                    <option value="">-- เลือกสถานะ --</option>
                     <option value="ลาป่วย">ลาป่วย</option>
                     <option value="ลากิจ">ลากิจ</option>
                     <option value="ลาพักผ่อน">ลาพักผ่อน</option>
@@ -521,7 +494,9 @@
                   </select>
                 </div>
                 <div class="col-md-5">
-                  <label class="form-label fw-bold small mb-1">ช่วงเวลา:</label>
+                  <label class="form-label fw-bold small mb-1 req-label"
+                    >ช่วงเวลา:</label
+                  >
                   <select
                     id="leave-period"
                     class="form-select form-select-sm"
@@ -728,6 +703,7 @@
             (l) => normId(l.exec_id) === normId(exec.exec_id),
           );
 
+          // Render การลาในตารางล่าง
           if (execLeave) {
             hasLeaves = true;
             const tr = document.createElement("tr");
@@ -748,60 +724,68 @@
             </td>
           `;
             leaveTbody.appendChild(tr);
-          } else if (execEvents.length === 0) {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-            <td><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>
-            <td class="text-center">-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td class="no-export text-center"></td>
-          `;
-            tbody.appendChild(tr);
-          } else {
-            execEvents.forEach((ev, idx) => {
+          }
+
+          // Render ตารางบน (ภารกิจ): แสดงภารกิจตามปกติหากไม่ได้ลาเต็มวัน
+          const isFullDayLeave =
+            execLeave && (execLeave.period === "เต็มวัน" || !execLeave.period);
+
+          if (!isFullDayLeave) {
+            if (execEvents.length === 0) {
               const tr = document.createElement("tr");
-              let nameTd = "";
-              if (idx === 0) {
-                nameTd = `<td rowspan="${execEvents.length}"><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>`;
-              }
-
-              const timeDisplay = cleanTimeDisplay(ev.start_time);
-              const dressRemark = [ev.dress_code, ev.remark]
-                .filter(Boolean)
-                .join(" / ");
-
-              const jointExecNames = appData.executives
-                .filter(
-                  (e) =>
-                    (ev.assigned_exec_ids || []).some(
-                      (id) => normId(id) === normId(e.exec_id),
-                    ) && normId(e.exec_id) !== normId(exec.exec_id),
-                )
-                .map((e) => e.name);
-
-              let jointBadge = "";
-              if (jointExecNames.length > 0) {
-                jointBadge = `<div class="joint-exec-badge"><i class="fa-solid fa-users me-1"></i>ไปร่วมกับ: ${jointExecNames.join(", ")}</div>`;
-              }
-
               tr.innerHTML = `
-              ${nameTd}
-              <td class="text-center fw-bold">${timeDisplay}</td>
-              <td>
-                <div>${ev.title}</div>
-                ${jointBadge}
-              </td>
-              <td>${ev.location || "-"}</td>
-              <td>${dressRemark || "-"}</td>
-              <td class="no-export text-center">
-                <button class="btn btn-sm btn-outline-warning py-0 px-1 me-1" onclick="editEvent('${ev.event_id}')"><i class="fa-solid fa-pen"></i></button>
-                <button class="btn btn-sm btn-outline-danger py-0 px-1" onclick="deleteEventConfirm('${ev.event_id}')"><i class="fa-solid fa-trash"></i></button>
-              </td>
+              <td><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>
+              <td class="text-center">-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td class="no-export text-center"></td>
             `;
               tbody.appendChild(tr);
-            });
+            } else {
+              execEvents.forEach((ev, idx) => {
+                const tr = document.createElement("tr");
+                let nameTd = "";
+                if (idx === 0) {
+                  nameTd = `<td rowspan="${execEvents.length}"><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>`;
+                }
+
+                const timeDisplay = cleanTimeDisplay(ev.start_time);
+                const dressRemark = [ev.dress_code, ev.remark]
+                  .filter(Boolean)
+                  .join(" / ");
+
+                const jointExecNames = appData.executives
+                  .filter(
+                    (e) =>
+                      (ev.assigned_exec_ids || []).some(
+                        (id) => normId(id) === normId(e.exec_id),
+                      ) && normId(e.exec_id) !== normId(exec.exec_id),
+                  )
+                  .map((e) => e.name);
+
+                let jointBadge = "";
+                if (jointExecNames.length > 0) {
+                  jointBadge = `<div class="joint-exec-badge"><i class="fa-solid fa-users me-1"></i>ไปร่วมกับ: ${jointExecNames.join(", ")}</div>`;
+                }
+
+                tr.innerHTML = `
+                ${nameTd}
+                <td class="text-center fw-bold">${timeDisplay}</td>
+                <td>
+                  <div>${ev.title}</div>
+                  ${jointBadge}
+                </td>
+                <td>${ev.location || "-"}</td>
+                <td>${dressRemark || "-"}</td>
+                <td class="no-export text-center">
+                  <button class="btn btn-sm btn-outline-warning py-0 px-1 me-1" onclick="editEvent('${ev.event_id}')"><i class="fa-solid fa-pen"></i></button>
+                  <button class="btn btn-sm btn-outline-danger py-0 px-1" onclick="deleteEventConfirm('${ev.event_id}')"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              `;
+                tbody.appendChild(tr);
+              });
+            }
           }
         });
 
@@ -823,12 +807,14 @@
 
         const leaveExecSelect = document.getElementById("leave-exec-id");
         if (leaveExecSelect && appData.executives) {
-          leaveExecSelect.innerHTML = appData.executives
-            .map(
-              (e) =>
-                `<option value="${e.exec_id}">${e.name} (${e.position})</option>`,
-            )
-            .join("");
+          leaveExecSelect.innerHTML =
+            `<option value="">-- เลือกผู้บริหาร --</option>` +
+            appData.executives
+              .map(
+                (e) =>
+                  `<option value="${e.exec_id}">${e.name} (${e.position})</option>`,
+              )
+              .join("");
         }
       }
 
@@ -864,8 +850,15 @@
         return false;
       }
 
+      function clearValidationErrors() {
+        document
+          .querySelectorAll(".is-invalid")
+          .forEach((el) => el.classList.remove("is-invalid"));
+      }
+
       async function openAddEventModal() {
         if (!(await checkAdminPass())) return;
+        clearValidationErrors();
         document.getElementById("eventForm").reset();
         document.getElementById("event-id").value = "";
         document.getElementById("event-date").value =
@@ -876,6 +869,7 @@
 
       async function openLeaveModal() {
         if (!(await checkAdminPass())) return;
+        clearValidationErrors();
         document.getElementById("leaveForm").reset();
         document.getElementById("leave-date").value =
           document.getElementById("search-date").value;
@@ -909,6 +903,7 @@
 
       async function editEvent(eventId) {
         if (!(await checkAdminPass())) return;
+        clearValidationErrors();
         const ev = appData.events.find((e) => e.event_id === eventId);
         if (!ev) return;
 
@@ -927,15 +922,47 @@
       }
 
       async function submitEventForm() {
+        clearValidationErrors();
+        let isValid = true;
+
         const selectedExecs = Array.from(
           document.querySelectorAll(".exec-cb:checked"),
         ).map((cb) => cb.value);
         if (selectedExecs.length === 0) {
-          Swal.fire("เตือน", "กรุณาเลือกผู้บริหารอย่างน้อย 1 ท่าน", "warning");
+          document
+            .getElementById("executives-checkbox-group")
+            .classList.add("is-invalid");
+          isValid = false;
+        }
+
+        const dateEl = document.getElementById("event-date");
+        if (!dateEl.value) {
+          dateEl.classList.add("is-invalid");
+          isValid = false;
+        }
+
+        const timeEl = document.getElementById("start-time");
+        if (!timeEl.value) {
+          timeEl.classList.add("is-invalid");
+          isValid = false;
+        }
+
+        const titleEl = document.getElementById("event-title");
+        if (!titleEl.value.trim()) {
+          titleEl.classList.add("is-invalid");
+          isValid = false;
+        }
+
+        if (!isValid) {
+          Swal.fire(
+            "เตือน",
+            "กรุณากรอกข้อมูลในช่องที่จำเป็นให้ครบถ้วน",
+            "warning",
+          );
           return;
         }
 
-        const rawTime = document.getElementById("start-time").value;
+        const rawTime = timeEl.value;
         const formattedTime = rawTime ? rawTime.replace(":", ".") + " น." : "";
 
         const payload = {
@@ -944,10 +971,10 @@
           event: {
             event_id: document.getElementById("event-id").value,
             assigned_exec_ids: selectedExecs,
-            event_date: document.getElementById("event-date").value,
+            event_date: dateEl.value,
             start_time: formattedTime,
             end_time: "",
-            title: document.getElementById("event-title").value,
+            title: titleEl.value.trim(),
             location: document.getElementById("event-location").value,
             dress_code: document.getElementById("event-dress").value,
             remark: document.getElementById("event-remark").value,
@@ -975,21 +1002,57 @@
           setTimeout(() => {
             Swal.fire("สำเร็จ", "บันทึกข้อมูลเรียบร้อยแล้ว", "success");
             loadSchedule();
-          }, 1200);
+          }, 1500);
         } catch (err) {
           Swal.fire("ข้อผิดพลาด", "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้", "error");
         }
       }
 
       async function submitLeaveForm() {
+        clearValidationErrors();
+        let isValid = true;
+
+        const execEl = document.getElementById("leave-exec-id");
+        if (!execEl.value) {
+          execEl.classList.add("is-invalid");
+          isValid = false;
+        }
+
+        const dateEl = document.getElementById("leave-date");
+        if (!dateEl.value) {
+          dateEl.classList.add("is-invalid");
+          isValid = false;
+        }
+
+        const typeEl = document.getElementById("leave-type");
+        if (!typeEl.value) {
+          typeEl.classList.add("is-invalid");
+          isValid = false;
+        }
+
+        const periodEl = document.getElementById("leave-period");
+        if (!periodEl.value) {
+          periodEl.classList.add("is-invalid");
+          isValid = false;
+        }
+
+        if (!isValid) {
+          Swal.fire(
+            "เตือน",
+            "กรุณากรอกข้อมูลในช่องที่จำเป็นให้ครบถ้วน",
+            "warning",
+          );
+          return;
+        }
+
         const payload = {
           action: "saveLeaveStatus",
           password: currentAdminPass,
           leave: {
-            exec_id: document.getElementById("leave-exec-id").value,
-            leave_date: document.getElementById("leave-date").value,
-            status_type: document.getElementById("leave-type").value,
-            period: document.getElementById("leave-period").value,
+            exec_id: execEl.value,
+            leave_date: dateEl.value,
+            status_type: typeEl.value,
+            period: periodEl.value,
             remark: document.getElementById("leave-remark").value,
           },
         };
@@ -1012,11 +1075,10 @@
           const modalObj = bootstrap.Modal.getInstance(modalEl);
           if (modalObj) modalObj.hide();
 
-          // เพิ่มเวลาหน่วงเป็น 2.5 วินาที เพื่อรอให้ GAS เขียน Sheet และ Index ข้อมูลเสร็จ
           setTimeout(() => {
             Swal.fire("สำเร็จ", "บันทึกสถานะการลาเรียบร้อย", "success");
             loadSchedule();
-          }, 2500);
+          }, 2000);
         } catch (err) {
           Swal.fire("ข้อผิดพลาด", "บันทึกไม่สำเร็จ", "error");
         }
@@ -1048,7 +1110,7 @@
           setTimeout(() => {
             Swal.close();
             loadSchedule();
-          }, 2000);
+          }, 1500);
         }
       }
 
@@ -1075,7 +1137,6 @@
         }
       }
 
-      /* Export PNG Engine (คง สไตล์เดียวกับ หน้าเว็บ 1:1) */
       function exportImage169() {
         updateDownloadTimestamp();
         const srcElement = document.getElementById("schedule-table-container");
@@ -1088,7 +1149,6 @@
           .querySelectorAll(".no-export")
           .forEach((el) => (el.style.display = "none"));
 
-        // ตรวจสอบและดึงค่า devCredit ล่าสุด
         const devCreditEl = document.getElementById("footer-dev-credit");
         if (devCreditEl && !devCreditEl.innerText) {
           devCreditEl.innerText =
@@ -1102,8 +1162,7 @@
         wrap.style.position = "absolute";
         wrap.style.left = "-9999px";
         wrap.style.top = "-9999px";
-        wrap.style.width =
-          "1050px"; /* ขยายความกว้างกล่องเพื่อให้อ่านง่าย สบายตา */
+        wrap.style.width = "1050px";
         wrap.style.backgroundColor = "#ffffff";
         wrap.style.padding = "12px";
         wrap.style.boxSizing = "border-box";
@@ -1129,7 +1188,6 @@
         });
       }
 
-      /* Export PDF Engine (ปรับอัตราส่วน A4 พอดี 1 หน้า สวยงามเหมือนหน้าเว็บ) */
       function exportPDF() {
         updateDownloadTimestamp();
         const { jsPDF } = window.jspdf;
