@@ -60,16 +60,16 @@
         margin-bottom: 0 !important;
       }
 
-      /* โครงสร้างเซลล์ตาราง Spacing สวยงาม กระชับพอดี */
+      /* Compact & Clean Layout with Balanced Padding */
       .table-schedule th,
       .table-schedule td {
         border: 1px solid #222 !important;
-        padding: 3px 5px !important;
+        padding: 3px 4px !important; /*ปรับลดจาก 4px 6px เหลือ 2px 4px กระชับกำลังดี */
         vertical-align: middle !important;
         font-size: 11px !important;
-        line-height: 1.18 !important;
+        line-height: 1.25 !important;
         word-break: break-word;
-        white-space: pre-wrap;
+        /* white-space: pre-wrap; */
       }
 
       .table-schedule th {
@@ -77,7 +77,7 @@
         text-align: center;
         font-weight: 700;
         color: #1d3557;
-        padding: 4px 4px !important;
+        padding: 3px 4px !important;
         font-size: 11.5px !important;
       }
 
@@ -85,11 +85,10 @@
       .exec-name {
         font-weight: 700;
         color: #0d1b2a;
-        font-size: 11px;
+        font-size: 10.5px;
         line-height: 1.1;
         margin-bottom: 1px;
       }
-
       .exec-pos {
         font-size: 9.5px;
         color: #415a77;
@@ -124,14 +123,13 @@
         background-color: #e0f2fe !important;
         color: #0369a1 !important;
         border: 1px solid #bae6fd !important;
-        padding: 1px 3px !important;
+        padding: 2px 3px !important;
         border-radius: 2px;
-        margin-top: 1px;
+        margin: 2px 3px;
         display: inline-block;
         line-height: 1;
       }
 
-      /* Footer & Dev Credit */
       .table-footer-container {
         display: flex !important;
         justify-content: space-between !important;
@@ -224,13 +222,13 @@
                 class="btn btn-outline-success btn-mobile-touch"
                 onclick="exportImage169()"
               >
-                <i class="fa-solid fa-file-image me-1"></i> PNG
+                <i class="fa-solid fa-file-image me-1"></i> รูปภาพ
               </button>
               <button
                 class="btn btn-outline-danger btn-mobile-touch"
                 onclick="exportPDF()"
               >
-                <i class="fa-solid fa-file-pdf me-1"></i> PDF (A4 พอดี 1 หน้า)
+                <i class="fa-solid fa-file-pdf me-1"></i> ไฟล์ PDF
               </button>
             </div>
           </div>
@@ -345,14 +343,15 @@
             <form id="eventForm" novalidate>
               <input type="hidden" id="event-id" />
 
+              <!-- ช่องเลือกผู้บริหาร: ขยายสูงพอดี ไม่มี Scrollbar -->
               <div class="mb-2">
-                <label class="form-label fw-bold small mb-1 req-label"
-                  >เลือกผู้บริหารที่เข้าร่วม (เลือกอย่างน้อย 1 ท่าน):</label
-                >
+                <label class="form-label fw-bold small mb-1 req-label">
+                  เลือกผู้บริหารที่เข้าร่วม (เลือกอย่างน้อย 1 ท่าน):
+                </label>
                 <div
                   id="executives-checkbox-group"
                   class="row g-2 p-2 border rounded bg-light"
-                  style="max-height: 180px; overflow-y: auto"
+                  style="height: auto; max-height: none; overflow: visible"
                 ></div>
               </div>
 
@@ -368,16 +367,60 @@
                     required
                   />
                 </div>
+
+                <!-- ช่องเลือกเวลาแบบ 24 ชม. เลือกง่าย -->
                 <div class="col-md-6">
                   <label class="form-label fw-bold small mb-1 req-label"
-                    >เวลาเริ่มภารกิจ:</label
+                    >เวลาเริ่มภารกิจ (24 ชม.):</label
                   >
-                  <input
-                    type="time"
-                    id="start-time"
-                    class="form-control form-control-sm"
-                    required
-                  />
+                  <div class="d-flex align-items-center gap-1">
+                    <select
+                      id="start-time-hour"
+                      class="form-select form-select-sm"
+                      required
+                    >
+                      <option value="">ชม.</option>
+                      <option value="06">06</option>
+                      <option value="07">07</option>
+                      <option value="08">08</option>
+                      <option value="09">09</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                      <option value="13">13</option>
+                      <option value="14">14</option>
+                      <option value="15">15</option>
+                      <option value="16">16</option>
+                      <option value="17">17</option>
+                      <option value="18">18</option>
+                      <option value="19">19</option>
+                      <option value="20">20</option>
+                      <option value="21">21</option>
+                      <option value="22">22</option>
+                      <option value="23">23</option>
+                      <option value="00">00</option>
+                    </select>
+                    <span class="fw-bold">:</span>
+                    <select
+                      id="start-time-minute"
+                      class="form-select form-select-sm"
+                      required
+                    >
+                      <option value="00">00</option>
+                      <option value="05">05</option>
+                      <option value="10">10</option>
+                      <option value="15">15</option>
+                      <option value="20">20</option>
+                      <option value="25">25</option>
+                      <option value="30">30</option>
+                      <option value="35">35</option>
+                      <option value="40">40</option>
+                      <option value="45">45</option>
+                      <option value="50">50</option>
+                      <option value="55">55</option>
+                    </select>
+                    <span class="small text-muted ms-1">น.</span>
+                  </div>
                 </div>
               </div>
 
@@ -925,9 +968,25 @@
 
         document.getElementById("event-id").value = ev.event_id;
         document.getElementById("event-date").value = ev.event_date;
-        document.getElementById("start-time").value = timeToInputValue(
-          ev.start_time,
-        );
+
+        // แปลงเวลา 24 ชม. กลับเข้าช่อง Dropdown ชั่วโมง/นาที
+        if (ev.start_time) {
+          const cleanT = ev.start_time
+            .replace(" น.", "")
+            .replace(".", ":")
+            .trim();
+          const parts = cleanT.split(":");
+          if (parts.length >= 2) {
+            document.getElementById("start-time-hour").value =
+              parts[0].padStart(2, "0");
+            document.getElementById("start-time-minute").value =
+              parts[1].padStart(2, "0");
+          }
+        } else {
+          document.getElementById("start-time-hour").value = "";
+          document.getElementById("start-time-minute").value = "00";
+        }
+
         document.getElementById("event-title").value = ev.title;
         document.getElementById("event-location").value = ev.location;
         document.getElementById("event-dress").value = ev.dress_code;
@@ -957,9 +1016,10 @@
           isValid = false;
         }
 
-        const timeEl = document.getElementById("start-time");
-        if (!timeEl.value) {
-          timeEl.classList.add("is-invalid");
+        const hourEl = document.getElementById("start-time-hour");
+        const minEl = document.getElementById("start-time-minute");
+        if (!hourEl.value) {
+          hourEl.classList.add("is-invalid");
           isValid = false;
         }
 
@@ -978,8 +1038,8 @@
           return;
         }
 
-        const rawTime = timeEl.value;
-        const formattedTime = rawTime ? rawTime.replace(":", ".") + " น." : "";
+        // รวมค่าเวลา 24 ชม. เป็นฟอร์แมต "HH.MM น."
+        const formattedTime = `${hourEl.value}.${minEl.value || "00"} น.`;
 
         const payload = {
           action: "saveEvent",
@@ -1023,7 +1083,6 @@
           Swal.fire("ข้อผิดพลาด", "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้", "error");
         }
       }
-
       async function submitLeaveForm() {
         clearValidationErrors();
         let isValid = true;
