@@ -55,36 +55,39 @@
         margin-bottom: 0 !important;
       }
 
-      /* Ultra Tight Layout to eliminate extra spacing */
+      /* Tight & Balanced Layout with Spacing */
       .table-schedule th,
       .table-schedule td {
         border: 1px solid #222 !important;
-        padding: 1px 3px !important;
+        padding: 4px 6px !important; /* เพิ่ม Padding ให้มีพื้นที่หายใจ สวยงามพอดี */
         vertical-align: middle !important;
-        font-size: 10.5px !important;
-        line-height: 1.05 !important;
-        word-break: break-word;
-        white-space: pre-wrap;
+        font-size: 11px !important;
+        line-height: 1.25 !important; /* ปรับ Spacing บรรทัดให้อ่านง่าย */
+        /* word-break: break-word;
+        white-space: pre-wrap; */
       }
+
       .table-schedule th {
         background-color: #e2ece9 !important;
         text-align: center;
         font-weight: 700;
         color: #1d3557;
-        padding: 2px 2px !important;
-        font-size: 11px !important;
+        padding: 5px 4px !important;
+        font-size: 11.5px !important;
       }
+
+      /* ชื่อ และ ตำแหน่งผู้บริหาร */
       .exec-name {
         font-weight: 700;
         color: #0d1b2a;
-        font-size: 10.5px;
-        line-height: 1;
-        margin: 0;
+        font-size: 11px;
+        line-height: 1.2;
+        margin-bottom: 2px;
       }
       .exec-pos {
-        font-size: 9px;
+        font-size: 9.5px;
         color: #415a77;
-        line-height: 1;
+        line-height: 1.15;
         margin: 0;
       }
 
@@ -112,9 +115,9 @@
         background-color: #e0f2fe;
         color: #0369a1;
         border: 1px solid #bae6fd;
-        padding: 0px 3px;
+        padding: 2px 3px;
         border-radius: 2px;
-        margin-top: 1px;
+        margin-top: 2px;
         display: inline-block;
         line-height: 1;
       }
@@ -140,6 +143,27 @@
         font-weight: 600;
         border-radius: 5px;
         font-size: 11.5px;
+      }
+
+      .table-footer-container {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        margin-top: 6px !important;
+        padding-top: 4px !important;
+        border-top: 1px solid #ccc !important;
+        font-size: 9.5px !important;
+        color: #444 !important;
+        font-weight: 600 !important;
+        width: 100% !important;
+      }
+
+      .table-dev-credit {
+        font-size: 9px !important;
+        color: #555 !important;
+        opacity: 0.9 !important;
+        text-align: center !important;
+        font-weight: 500 !important;
       }
 
       /* Compact mode when generating exported documents */
@@ -1043,7 +1067,7 @@
         }
       }
 
-      /* Auto-Compact Export PNG Engine */
+      /* Export PNG Engine (คง สไตล์เดียวกับ หน้าเว็บ 1:1) */
       function exportImage169() {
         updateDownloadTimestamp();
         const srcElement = document.getElementById("schedule-table-container");
@@ -1056,23 +1080,31 @@
           .querySelectorAll(".no-export")
           .forEach((el) => (el.style.display = "none"));
 
+        // ตรวจสอบและดึงค่า devCredit ล่าสุด
+        const devCreditEl = document.getElementById("footer-dev-credit");
+        if (devCreditEl && !devCreditEl.innerText) {
+          devCreditEl.innerText =
+            appData.devCredit ||
+            "พัฒนาระบบโดย: งานโสตทัศนูปกรณ์ กลุ่มงานพัฒนายุทธศาสตร์สาธารณสุข สสจ.ลพบุรี";
+        }
+
         const clone = srcElement.cloneNode(true);
-        clone.classList.add("export-compact");
 
         const wrap = document.createElement("div");
         wrap.style.position = "absolute";
         wrap.style.left = "-9999px";
         wrap.style.top = "-9999px";
-        wrap.style.width = "950px";
+        wrap.style.width =
+          "1050px"; /* ขยายความกว้างกล่องเพื่อให้อ่านง่าย สบายตา */
         wrap.style.backgroundColor = "#ffffff";
-        wrap.style.padding = "8px";
+        wrap.style.padding = "12px";
         wrap.style.boxSizing = "border-box";
 
         wrap.appendChild(clone);
         document.body.appendChild(wrap);
 
         html2canvas(wrap, {
-          scale: 2.2,
+          scale: 2,
           useCORS: true,
           logging: false,
         }).then((canvas) => {
@@ -1089,7 +1121,7 @@
         });
       }
 
-      /* Dynamic A4 Single Page PDF Engine */
+      /* Export PDF Engine (ปรับอัตราส่วน A4 พอดี 1 หน้า สวยงามเหมือนหน้าเว็บ) */
       function exportPDF() {
         updateDownloadTimestamp();
         const { jsPDF } = window.jspdf;
@@ -1098,28 +1130,33 @@
           .querySelectorAll(".no-export")
           .forEach((el) => (el.style.display = "none"));
 
+        const devCreditEl = document.getElementById("footer-dev-credit");
+        if (devCreditEl && !devCreditEl.innerText) {
+          devCreditEl.innerText =
+            appData.devCredit ||
+            "พัฒนาระบบโดย: งานโสตทัศนูปกรณ์ กลุ่มงานพัฒนายุทธศาสตร์สาธารณสุข สสจ.ลพบุรี";
+        }
+
         const clone = srcElement.cloneNode(true);
-        clone.classList.add("export-compact");
 
         const wrap = document.createElement("div");
         wrap.style.position = "absolute";
         wrap.style.left = "-9999px";
         wrap.style.top = "-9999px";
-        wrap.style.width = "900px";
+        wrap.style.width = "1000px";
         wrap.style.backgroundColor = "#ffffff";
-        wrap.style.padding = "6px";
+        wrap.style.padding = "10px";
         wrap.style.boxSizing = "border-box";
 
         wrap.appendChild(clone);
         document.body.appendChild(wrap);
 
-        html2canvas(wrap, { scale: 2.5 }).then((canvas) => {
+        html2canvas(wrap, { scale: 2.2 }).then((canvas) => {
           const imgData = canvas.toDataURL("image/png");
-          const pdf = new jsPDF("p", "mm", "a4"); // A4 Portrait
-          const pdfWidth = 195; // 210mm - 15mm margins
+          const pdf = new jsPDF("p", "mm", "a4");
+          const pdfWidth = 200;
           const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-          // Strict Single Page Limit fit to 280mm
           const maxHeight = 282;
           let finalWidth = pdfWidth;
           let finalHeight = pdfHeight;
