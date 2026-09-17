@@ -1012,10 +1012,11 @@
           const modalObj = bootstrap.Modal.getInstance(modalEl);
           if (modalObj) modalObj.hide();
 
+          // เพิ่มเวลาหน่วงเป็น 2.5 วินาที เพื่อรอให้ GAS เขียน Sheet และ Index ข้อมูลเสร็จ
           setTimeout(() => {
             Swal.fire("สำเร็จ", "บันทึกสถานะการลาเรียบร้อย", "success");
             loadSchedule();
-          }, 1200);
+          }, 2500);
         } catch (err) {
           Swal.fire("ข้อผิดพลาด", "บันทึกไม่สำเร็จ", "error");
         }
@@ -1030,6 +1031,10 @@
           confirmButtonText: "ตกลง",
         });
         if (confirm.isConfirmed) {
+          Swal.fire({
+            title: "กำลังลบรายการ...",
+            didOpen: () => Swal.showLoading(),
+          });
           await fetch(GAS_API_URL, {
             method: "POST",
             mode: "no-cors",
@@ -1040,7 +1045,10 @@
               leave_id: leaveId,
             }),
           });
-          setTimeout(loadSchedule, 1000);
+          setTimeout(() => {
+            Swal.close();
+            loadSchedule();
+          }, 2000);
         }
       }
 
