@@ -751,11 +751,32 @@
 
         let hasLeaves = false;
 
+        // ฟังก์ชันช่วยแปลงเวลา "08.30 น." เป็นนาทีเพื่อใช้เรียงลำดับ
+        const parseTimeToMinutes = (timeStr) => {
+          if (!timeStr) return 9999;
+          const cleanStr = String(timeStr)
+            .replace(" น.", "")
+            .replace(":", ".")
+            .trim();
+          const parts = cleanStr.split(".");
+          if (parts.length >= 2) {
+            return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+          }
+          return 9999;
+        };
+
         displayExecs.forEach((exec) => {
-          const execEvents = (appData.events || []).filter((ev) =>
+          // ดึงภารกิจของผู้บริหารท่านนี้ พร้อมสั่ง Sort เรียงตามเวลาเริ่มภารกิจ
+          let execEvents = (appData.events || []).filter((ev) =>
             (ev.assigned_exec_ids || []).some(
               (id) => normId(id) === normId(exec.exec_id),
             ),
+          );
+
+          execEvents.sort(
+            (a, b) =>
+              parseTimeToMinutes(a.start_time) -
+              parseTimeToMinutes(b.start_time),
           );
 
           const execLeave = (appData.leaves || []).find(
@@ -773,19 +794,19 @@
             const remarkText = execLeave.remark ? ` - ${execLeave.remark}` : "";
 
             tr.innerHTML = `
-            <td style="width: 25%;"><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>
-            <td style="width: 9%;" class="text-center fw-bold text-danger">${execLeave.period || "เต็มวัน"}</td>
-            <td style="width: 66%;" colspan="3">
-              <span class="leave-badge"><i class="fa-solid fa-user-clock me-1"></i> [ ${execLeave.status_type}${periodStr} ]</span>${remarkText}
-            </td>
-            <td class="no-export text-center" style="width: 50px;">
-              <button class="btn btn-sm btn-outline-danger py-0 px-1" title="ยกเลิกสถานะ" onclick="clearLeaveConfirm('${execLeave.leave_id}')"><i class="fa-solid fa-circle-xmark"></i></button>
-            </td>
-          `;
+        <td style="width: 25%;"><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>
+        <td style="width: 9%;" class="text-center fw-bold text-danger">${execLeave.period || "เต็มวัน"}</td>
+        <td style="width: 66%;" colspan="3">
+          <span class="leave-badge"><i class="fa-solid fa-user-clock me-1"></i> [ ${execLeave.status_type}${periodStr} ]</span>${remarkText}
+        </td>
+        <td class="no-export text-center" style="width: 50px;">
+          <button class="btn btn-sm btn-outline-danger py-0 px-1" title="ยกเลิกสถานะ" onclick="clearLeaveConfirm('${execLeave.leave_id}')"><i class="fa-solid fa-circle-xmark"></i></button>
+        </td>
+      `;
             leaveTbody.appendChild(tr);
           }
 
-          // Render ตารางบน (ภารกิจ): แสดงภารกิจตามปกติหากไม่ได้ลาเต็มวัน
+          // Render ตารางภารกิจหลัก
           const isFullDayLeave =
             execLeave && (execLeave.period === "เต็มวัน" || !execLeave.period);
 
@@ -793,13 +814,13 @@
             if (execEvents.length === 0) {
               const tr = document.createElement("tr");
               tr.innerHTML = `
-              <td><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>
-              <td class="text-center">-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td class="no-export text-center"></td>
-            `;
+          <td><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>
+          <td class="text-center">-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td class="no-export text-center"></td>
+        `;
               tbody.appendChild(tr);
             } else {
               execEvents.forEach((ev, idx) => {
@@ -829,19 +850,19 @@
                 }
 
                 tr.innerHTML = `
-                ${nameTd}
-                <td class="text-center fw-bold">${timeDisplay}</td>
-                <td>
-                  <div>${ev.title}</div>
-                  ${jointBadge}
-                </td>
-                <td>${ev.location || "-"}</td>
-                <td>${dressRemark || "-"}</td>
-                <td class="no-export text-center">
-                  <button class="btn btn-sm btn-outline-warning py-0 px-1 me-1" onclick="editEvent('${ev.event_id}')"><i class="fa-solid fa-pen"></i></button>
-                  <button class="btn btn-sm btn-outline-danger py-0 px-1" onclick="deleteEventConfirm('${ev.event_id}')"><i class="fa-solid fa-trash"></i></button>
-                </td>
-              `;
+            ${nameTd}
+            <td class="text-center fw-bold">${timeDisplay}</td>
+            <td>
+              <div>${ev.title}</div>
+              ${jointBadge}
+            </td>
+            <td>${ev.location || "-"}</td>
+            <td>${dressRemark || "-"}</td>
+            <td class="no-export text-center">
+              <button class="btn btn-sm btn-outline-warning py-0 px-1 me-1" onclick="editEvent('${ev.event_id}')"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn btn-sm btn-outline-danger py-0 px-1" onclick="deleteEventConfirm('${ev.event_id}')"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          `;
                 tbody.appendChild(tr);
               });
             }
