@@ -32,138 +32,179 @@
         color: #333;
       }
 
+      /* -------------------------------------
+         Header & Dashboard Controls
+      -------------------------------------- */
       .header-banner {
         background: linear-gradient(135deg, #1d3557 0%, #457b9d 100%);
         color: white;
         padding: 6px 0;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       }
-
       .card-custom {
         border: none;
         border-radius: 8px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         background: white;
       }
-
-      /* Container ของตารางหลัก */
-      #schedule-table-container {
-        background: white;
-        padding: 10px;
-        border-radius: 6px;
-      }
-
-      .table-schedule {
-        border-collapse: collapse;
-        width: 100%;
-        table-layout: fixed;
-        margin-bottom: 0 !important;
-      }
-
-      /* Compact & Clean Layout with Balanced Padding */
-      .table-schedule th,
-      .table-schedule td {
-        border: 1px solid #222 !important;
-        padding: 3px 4px !important; /*ปรับลดจาก 4px 6px เหลือ 2px 4px กระชับกำลังดี */
-        vertical-align: middle !important;
-        font-size: 11px !important;
-        line-height: 1.25 !important;
-        word-break: break-word;
-        /* white-space: pre-wrap; */
-      }
-
-      .table-schedule th {
-        background-color: #e2ece9 !important;
-        text-align: center;
-        font-weight: 700;
-        color: #1d3557;
-        padding: 3px 4px !important;
-        font-size: 11.5px !important;
-      }
-
-      /* ชื่อ และ ตำแหน่งผู้บริหาร */
-      .exec-name {
-        font-weight: 700;
-        color: #0d1b2a;
-        font-size: 10.5px;
-        line-height: 1.1;
-        margin-bottom: 1px;
-      }
-      .exec-pos {
-        font-size: 9.5px;
-        color: #415a77;
-        line-height: 1.05;
-        margin: 0;
-      }
-
-      /* ตารางการลาด้านล่าง (Leave Table) */
-      .leave-table-header {
-        background-color: #fff3cd !important;
-        color: #856404 !important;
-        font-weight: bold;
-        padding: 3px 4px !important;
-        font-size: 11px !important;
-        border: 1px solid #222 !important;
-        border-bottom: none !important;
-        margin-top: 6px !important;
-      }
-
-      .leave-badge {
-        background-color: #ffe5ec !important;
-        color: #d90429 !important;
-        font-weight: bold;
-        padding: 1px 4px !important;
-        border-radius: 3px;
-        display: inline-block;
-        font-size: 9.5px !important;
-      }
-
-      .joint-exec-badge {
-        font-size: 8.5px !important;
-        background-color: #e0f2fe !important;
-        color: #0369a1 !important;
-        border: 1px solid #bae6fd !important;
-        padding: 2px 3px !important;
-        border-radius: 2px;
-        margin: 2px 3px;
-        display: inline-block;
-        line-height: 1;
-      }
-
-      .table-footer-container {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        margin-top: 6px !important;
-        padding-top: 4px !important;
-        border-top: 1px solid #ccc !important;
-        font-size: 9.5px !important;
-        color: #444 !important;
-        font-weight: 600 !important;
-        width: 100% !important;
-      }
-
-      .table-dev-credit {
-        font-size: 9px !important;
-        color: #555 !important;
-        opacity: 0.9 !important;
-        text-align: center !important;
-        font-weight: 500 !important;
-      }
-
-      /* ปุ่มสำหรับอุปกรณ์พกพา */
       .btn-mobile-touch {
-        padding: 4px 8px;
+        padding: 4px 10px;
         font-weight: 600;
         border-radius: 5px;
         font-size: 11.5px;
       }
-
-      /* ดอกจันแดงแสดงช่องบังคับกรอก */
       .req-label::after {
         content: " *";
         color: #d90429;
         font-weight: bold;
+      }
+
+      /* -------------------------------------
+         Report Header Layout
+      -------------------------------------- */
+      .report-header-container {
+        text-align: center;
+        margin-bottom: 12px !important;
+        padding-bottom: 10px !important;
+        border-bottom: 2px solid #e2ece9 !important;
+      }
+      .report-title-main {
+        font-size: 15px !important;
+        font-weight: 700;
+        color: #1d3557;
+        margin-bottom: 2px;
+        letter-spacing: 0.2px;
+      }
+      .report-title-sub {
+        font-size: 14px !important;
+        font-weight: 500;
+        color: #6c757d;
+        margin-bottom: 10px;
+      }
+      .report-date-badge {
+        display: inline-block !important;
+        background-color: #e0f2fe !important;
+        color: #0369a1 !important;
+        padding: 5px 16px !important;
+        border-radius: 20px;
+        font-size: 11.5px !important;
+        font-weight: 700;
+        border: 1px solid #bae6fd !important;
+        box-shadow: none !important;
+      }
+      .report-date-badge i,
+      .report-date-badge span {
+        display: inline-block;
+        vertical-align: middle;
+        color: #0369a1 !important;
+      }
+
+      /* -------------------------------------
+         Schedule Table Styling
+      -------------------------------------- */
+      #schedule-table-container {
+        background: #ffffff;
+        padding: 16px;
+        border-radius: 8px;
+      }
+      .table-schedule {
+        border-collapse: collapse;
+        width: 100%;
+        table-layout: fixed;
+        border: 1px solid #222 !important;
+      }
+      .table-schedule th {
+        background-color: #1e293b !important;
+        color: #ffffff !important;
+        text-align: center;
+        font-weight: 600;
+        padding: 6px 4px !important;
+        font-size: 11.5px !important;
+        letter-spacing: 0.3px;
+        border: 1px solid #1e293b !important;
+      }
+      .table-schedule td {
+        padding: 6px 8px !important;
+        vertical-align: middle !important;
+        font-size: 11px !important;
+        line-height: 1.3 !important;
+        word-break: break-word;
+      }
+
+      /* ชื่อ และตำแหน่งผู้บริหาร */
+      .exec-name {
+        font-weight: 700;
+        color: #0f172a;
+        font-size: 15.5px !important;
+        line-height: 1.2;
+        margin-bottom: 2px;
+      }
+      .exec-pos {
+        font-size: 12px !important;
+        color: #64748b;
+        line-height: 1.15;
+        font-weight: 400;
+      }
+
+      /* -------------------------------------
+         Leave Table Styling
+      -------------------------------------- */
+      .leave-table-header {
+        background-color: #fef3c7 !important;
+        color: #92400e !important;
+        font-weight: 700;
+        padding: 5px 6px !important;
+        font-size: 11px !important;
+        border: 1px solid #222 !important;
+        border-bottom: none !important;
+        margin-top: 10px !important;
+      }
+      .leave-badge {
+        background-color: #fff1f2 !important;
+        color: #be123c !important;
+        border: 0.5px solid #fecdd3 !important;
+        font-weight: 600;
+        padding: 2px 6px !important;
+        border-radius: 4px;
+        display: inline-block;
+        font-size: 10.5px !important;
+      }
+
+      /* -------------------------------------
+         Footer Styling (Flexbox for html2canvas compatibility)
+      -------------------------------------- */
+      .table-footer-container {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        margin-top: 12px !important;
+        padding-top: 8px !important;
+        border-top: 1px dashed #adb5bd !important;
+        font-size: 10.5px !important;
+        width: 100% !important;
+        background-color: transparent !important;
+      }
+      .footer-section {
+        display: flex;
+        align-items: center;
+        flex: 1;
+      }
+      .footer-section.text-start {
+        justify-content: flex-start;
+        color: #343a40;
+        font-weight: 600;
+      }
+      .footer-section.text-center {
+        justify-content: center;
+        flex: 2.5;
+      }
+      .footer-section.text-end {
+        justify-content: flex-end;
+      }
+      .table-dev-credit {
+        font-size: 10px !important;
+        color: #6c757d !important;
+        font-weight: 500 !important;
       }
     </style>
   </head>
@@ -191,100 +232,120 @@
 
     <div class="container mb-3 px-1 px-md-3">
       <!-- Controls Card -->
-      <div class="card card-custom p-2 mb-2">
-        <div class="row g-2 align-items-center">
-          <div class="col-md-3">
-            <label class="form-label fw-bold mb-0 small"
-              ><i class="fa-regular fa-calendar-check me-1"></i> วันที่:</label
-            >
-            <input
-              type="date"
-              id="search-date"
-              class="form-control form-control-sm"
-              onchange="loadSchedule()"
-            />
+      <!-- Controls Card (ปรับปรุง UI ใหม่) -->
+      <div
+        class="card card-custom p-3 mb-3 border-0 shadow-sm"
+        style="background-color: #ffffff"
+      >
+        <div class="row g-3 align-items-end">
+          <!-- ฝั่งซ้าย: ส่วนค้นหาและตัวกรอง (Filters) -->
+          <div class="col-12 col-lg-6">
+            <div class="row g-2">
+              <div class="col-md-5">
+                <label
+                  class="form-label fw-bold mb-1 text-secondary"
+                  style="font-size: 12px"
+                >
+                  <i class="fa-regular fa-calendar-check me-1"></i> เลือกวันที่
+                </label>
+                <input
+                  type="date"
+                  id="search-date"
+                  class="form-control form-control-sm border-secondary-subtle"
+                  onchange="loadSchedule()"
+                />
+              </div>
+              <div class="col-md-7">
+                <label
+                  class="form-label fw-bold mb-1 text-secondary"
+                  style="font-size: 12px"
+                >
+                  <i class="fa-solid fa-filter me-1"></i> กรองผู้บริหาร / ภารกิจ
+                </label>
+                <select
+                  id="filter-exec-id"
+                  class="form-select form-select-sm border-secondary-subtle"
+                  onchange="renderScheduleTable()"
+                >
+                  <option value="">
+                    -- แสดงผู้บริหารทุกท่าน (ดูภาพรวม) --
+                  </option>
+                </select>
+              </div>
+            </div>
           </div>
-          <div class="col-md-9 pt-1 pt-md-0">
-            <div class="d-flex flex-wrap gap-1">
+
+          <!-- ฝั่งขวา: ส่วนเครื่องมือจัดการและส่งออก (Action Toolbar) -->
+          <div
+            class="col-12 col-lg-6 d-flex flex-wrap justify-content-start justify-content-lg-end gap-2"
+          >
+            <!-- กลุ่มปุ่มจัดการข้อมูล (Add/Leave) -->
+            <div class="btn-group shadow-sm" role="group">
               <button
-                class="btn btn-primary btn-mobile-touch"
+                class="btn btn-primary btn-sm fw-bold px-3"
+                style="font-size: 11.5px"
                 onclick="openAddEventModal()"
               >
                 <i class="fa-solid fa-plus me-1"></i> เพิ่มภารกิจ
               </button>
               <button
-                class="btn btn-warning btn-mobile-touch text-dark"
+                class="btn btn-warning btn-sm fw-bold px-3 text-dark"
+                style="font-size: 11.5px"
                 onclick="openLeaveModal()"
               >
                 <i class="fa-solid fa-user-slash me-1"></i> ลา/ไปราชการ
               </button>
+            </div>
+
+            <!-- กลุ่มปุ่มดาวน์โหลด/ส่งออก (Export) -->
+            <div class="btn-group shadow-sm" role="group">
               <button
-                class="btn btn-outline-success btn-mobile-touch"
+                class="btn btn-outline-success btn-sm fw-bold px-3"
+                style="font-size: 11.5px"
                 onclick="exportImage169()"
+                title="ส่งออกรูปภาพแนวตั้ง"
               >
-                <i class="fa-solid fa-file-image me-1"></i> รูปภาพ
+                <i class="fa-solid fa-image me-1"></i> แนวตั้ง
               </button>
+
               <button
-                class="btn btn-outline-danger btn-mobile-touch"
+                class="btn btn-outline-danger btn-sm fw-bold px-3"
+                style="font-size: 11.5px"
                 onclick="exportPDF()"
+                title="ส่งออกไฟล์ PDF"
               >
-                <i class="fa-solid fa-file-pdf me-1"></i> ไฟล์ PDF
+                <i class="fa-solid fa-file-pdf me-1"></i> PDF
               </button>
             </div>
           </div>
         </div>
-
-        <!-- Exec Filter Row -->
-        <div class="row mt-1 pt-1 border-top">
-          <div class="col-12">
-            <label
-              class="form-label fw-bold small text-muted mb-0"
-              style="font-size: 11px"
-              ><i class="fa-solid fa-filter me-1"></i> กรองดูผู้บริหาร /
-              งานที่ไปร่วมกัน:</label
-            >
-            <select
-              id="filter-exec-id"
-              class="form-select form-select-sm py-0"
-              style="font-size: 11px"
-              onchange="renderScheduleTable()"
-            >
-              <option value="">-- แสดงผู้บริหารทุกท่าน (ดูภาพรวม) --</option>
-            </select>
-          </div>
-        </div>
       </div>
+      <!-- สิ้นสุด Controls Card -->
 
       <!-- Schedule Table Container -->
       <div class="card card-custom p-2">
         <div id="schedule-table-container">
-          <div class="text-center mb-1">
-            <div class="fw-bold" style="font-size: 12.5px; color: #111">
-              กำหนดการประชุม / ภารกิจของ นายแพทย์สาธารณสุขจังหวัดลพบุรี
+          <div class="report-header-container">
+            <div class="report-title-main">
+              กำหนดการประชุม / ภารกิจของนายแพทย์สาธารณสุขจังหวัดลพบุรี
             </div>
-            <div class="fw-bold text-secondary" style="font-size: 10px">
+            <div class="report-title-sub">
               และการมอบหมายงานให้รองนายแพทย์สาธารณสุขจังหวัดลพบุรี ปฏิบัติราชการ
             </div>
-            <div
-              class="text-primary fw-bold"
-              style="font-size: 11.5px"
-              id="display-date-str"
-            >
-              ประจำวัน...
+            <div class="report-date-badge">
+              <i class="fa-regular fa-calendar-check me-1"></i>
+              <span id="display-date-str">ประจำวัน...</span>
             </div>
           </div>
 
           <div class="table-responsive" style="overflow-x: hidden">
-            <!-- Table 1: Normal Events -->
+            <!-- Table 1: Main Events -->
             <table class="table-schedule mb-1" id="main-table">
               <thead>
                 <tr>
                   <th style="width: 25%">ชื่อ-สกุล ตำแหน่ง</th>
-                  <th style="width: 9%">เวลา</th>
-                  <th style="width: 36%">ภารกิจ</th>
-                  <th style="width: 15%">สถานที่</th>
-                  <th style="width: 15%">การแต่งกาย / หมายเหตุ</th>
-                  <th class="no-export" style="width: 50px">จัดการ</th>
+                  <th style="width: 68%">กำหนดการ / ภารกิจ (เรียงตามเวลา)</th>
+                  <th class="no-export" style="width: 7%">จัดการ</th>
                 </tr>
               </thead>
               <tbody id="schedule-tbody">
@@ -292,7 +353,7 @@
               </tbody>
             </table>
 
-            <!-- Table 2: Separate Leave / Absence Group -->
+            <!-- Table 2: Leaves -->
             <div id="leave-table-section" style="display: none">
               <div class="leave-table-header text-center fw-bold">
                 <i class="fa-solid fa-user-clock me-1"></i> รายการผู้บริหาร ลา /
@@ -300,37 +361,38 @@
               </div>
               <table class="table-schedule" id="leave-table">
                 <tbody id="leave-tbody">
-                  <!-- JS Render Leaves -->
+                  <!-- JS Render -->
                 </tbody>
               </table>
             </div>
           </div>
 
-          <!-- Footer Bar: Publisher (Left) | Dev Credit (Center) | Timestamp (Right) -->
+          <!-- Footer Bar -->
           <div class="table-footer-container">
-            <div style="flex: 1; text-align: left" id="footer-publisher-text">
-              ผู้จัดทำข้อมูล: สำนักงานเลขาฯ
+            <div class="footer-section text-start">
+              <i class="fa-solid fa-user-pen text-secondary me-1"></i>
+              <span id="footer-publisher-text"
+                >ผู้จัดทำข้อมูล: สำนักงานเลขาฯ</span
+              >
             </div>
-            <div
-              style="flex: 2; text-align: center"
-              class="table-dev-credit"
-              id="footer-dev-credit"
-            ></div>
-            <div
-              style="flex: 1; text-align: right"
-              id="footer-download-time"
-            ></div>
+            <div class="footer-section text-center">
+              <span class="table-dev-credit" id="footer-dev-credit"></span>
+            </div>
+            <div class="footer-section text-end text-muted">
+              <i class="fa-regular fa-clock me-1"></i>
+              <span id="footer-download-time"></span>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Modal 1: Add/Edit Event -->
+    <!-- Modal 1: Event Form -->
     <div class="modal fade" id="eventModal" tabindex="-1">
       <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header bg-light py-2">
-            <h6 class="modal-title fw-bold" id="modalTitle">
+            <h6 class="modal-title fw-bold">
               <i class="fa-solid fa-calendar-plus me-2"></i>บันทึกภารกิจ
             </h6>
             <button
@@ -343,11 +405,10 @@
             <form id="eventForm" novalidate>
               <input type="hidden" id="event-id" />
 
-              <!-- ช่องเลือกผู้บริหาร: ขยายสูงพอดี ไม่มี Scrollbar -->
               <div class="mb-2">
-                <label class="form-label fw-bold small mb-1 req-label">
-                  เลือกผู้บริหารที่เข้าร่วม (เลือกอย่างน้อย 1 ท่าน):
-                </label>
+                <label class="form-label fw-bold small mb-1 req-label"
+                  >เลือกผู้บริหารที่เข้าร่วม (เลือกอย่างน้อย 1 ท่าน):</label
+                >
                 <div
                   id="executives-checkbox-group"
                   class="row g-2 p-2 border rounded bg-light"
@@ -367,8 +428,6 @@
                     required
                   />
                 </div>
-
-                <!-- ช่องเลือกเวลาแบบ 24 ชม. เลือกง่าย -->
                 <div class="col-md-6">
                   <label class="form-label fw-bold small mb-1 req-label"
                     >เวลาเริ่มภารกิจ (24 ชม.):</label
@@ -495,7 +554,7 @@
       </div>
     </div>
 
-    <!-- Modal 2: Leave Status -->
+    <!-- Modal 2: Leave Form -->
     <div class="modal fade" id="leaveModal" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -600,12 +659,11 @@
       </div>
     </div>
 
+    <!-- Application Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
       const GAS_API_URL =
         "https://script.google.com/macros/s/AKfycbzcXt4sThSINKmzxzew8oqhtJiEcgwCCzGQNBGiw5k5eVobrgBfdHCaoNjonX2TZ5z5/exec";
-
       let currentAdminPass = "";
       let appData = {
         executives: [],
@@ -621,7 +679,6 @@
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         document.getElementById("search-date").valueAsDate = tomorrow;
-
         loadSchedule();
       });
 
@@ -636,23 +693,11 @@
         if (!raw) return "-";
         if (raw.includes("T")) {
           const d = new Date(raw);
-          const hrs = String(d.getHours()).padStart(2, "0");
-          const mins = String(d.getMinutes()).padStart(2, "0");
-          return `${hrs}.${mins} น.`;
+          return `${String(d.getHours()).padStart(2, "0")}.${String(d.getMinutes()).padStart(2, "0")} น.`;
         }
         let t = raw.replace(":", ".");
         if (!t.includes("น.")) t += " น.";
         return t;
-      }
-
-      function timeToInputValue(timeStr) {
-        if (!timeStr) return "";
-        let clean = timeStr.replace(" น.", "").trim();
-        let parts = clean.split(".");
-        if (parts.length === 2) {
-          return `${parts[0].padStart(2, "0")}:${parts[1].padStart(2, "0")}`;
-        }
-        return clean;
       }
 
       function updateDownloadTimestamp() {
@@ -667,7 +712,7 @@
           minute: "2-digit",
         });
         document.getElementById("footer-download-time").innerText =
-          `ดาวน์โหลดเมื่อ: ${thaiDate} ${timeStr} น.`;
+          `${thaiDate} ${timeStr} น.`;
       }
 
       async function loadSchedule() {
@@ -678,15 +723,15 @@
         });
 
         try {
-          const url = `${GAS_API_URL}?action=getSchedule&date=${targetDate}`;
-          const res = await fetch(url, { method: "GET", redirect: "follow" });
+          const res = await fetch(
+            `${GAS_API_URL}?action=getSchedule&date=${targetDate}`,
+            { method: "GET", redirect: "follow" },
+          );
           appData = await res.json();
-
           document.getElementById("footer-publisher-text").innerText =
             `ผู้จัดทำข้อมูล: ${appData.publisher || "สำนักงานเลขาฯ"}`;
           document.getElementById("footer-dev-credit").innerText =
             appData.devCredit || "";
-
           populateExecFilterOptions();
           renderScheduleTable();
           populateDatalists();
@@ -707,10 +752,9 @@
             const execLeave = (appData.leaves || []).find(
               (l) => normId(l.exec_id) === normId(e.exec_id),
             );
-            let statusTag = "";
-            if (execLeave) {
-              statusTag = ` [ ${execLeave.status_type} (${execLeave.period || "เต็มวัน"}) ]`;
-            }
+            let statusTag = execLeave
+              ? ` [ ${execLeave.status_type} (${execLeave.period || "เต็มวัน"}) ]`
+              : "";
             select.innerHTML += `<option value="${e.exec_id}">${e.name} (${e.position})${statusTag}</option>`;
           });
         }
@@ -738,7 +782,7 @@
         leaveTbody.innerHTML = "";
 
         if (!appData.executives || appData.executives.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted p-2">ไม่พบรายชื่อผู้บริหาร</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted p-3">ไม่พบรายชื่อผู้บริหาร</td></tr>`;
           leaveSection.style.display = "none";
           return;
         }
@@ -748,31 +792,26 @@
               (e) => normId(e.exec_id) === normId(selectedExecFilter),
             )
           : appData.executives;
-
         let hasLeaves = false;
 
-        // ฟังก์ชันช่วยแปลงเวลา "08.30 น." เป็นนาทีเพื่อใช้เรียงลำดับ
         const parseTimeToMinutes = (timeStr) => {
           if (!timeStr) return 9999;
-          const cleanStr = String(timeStr)
+          const parts = String(timeStr)
             .replace(" น.", "")
             .replace(":", ".")
-            .trim();
-          const parts = cleanStr.split(".");
-          if (parts.length >= 2) {
+            .trim()
+            .split(".");
+          if (parts.length >= 2)
             return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
-          }
           return 9999;
         };
 
         displayExecs.forEach((exec) => {
-          // ดึงภารกิจของผู้บริหารท่านนี้ พร้อมสั่ง Sort เรียงตามเวลาเริ่มภารกิจ
           let execEvents = (appData.events || []).filter((ev) =>
             (ev.assigned_exec_ids || []).some(
               (id) => normId(id) === normId(exec.exec_id),
             ),
           );
-
           execEvents.sort(
             (a, b) =>
               parseTimeToMinutes(a.start_time) -
@@ -782,87 +821,96 @@
           const execLeave = (appData.leaves || []).find(
             (l) => normId(l.exec_id) === normId(exec.exec_id),
           );
+          const isFullDayLeave =
+            execLeave && (execLeave.period === "เต็มวัน" || !execLeave.period);
 
-          // Render การลาในตารางล่าง
+          // Render: Leave Table
           if (execLeave) {
             hasLeaves = true;
-            const tr = document.createElement("tr");
             const periodStr =
               execLeave.period && execLeave.period !== "เต็มวัน"
                 ? ` (${execLeave.period})`
                 : "";
             const remarkText = execLeave.remark ? ` - ${execLeave.remark}` : "";
-
+            const tr = document.createElement("tr");
             tr.innerHTML = `
-        <td style="width: 25%;"><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>
-        <td style="width: 9%;" class="text-center fw-bold text-danger">${execLeave.period || "เต็มวัน"}</td>
-        <td style="width: 66%;" colspan="3">
-          <span class="leave-badge"><i class="fa-solid fa-user-clock me-1"></i> [ ${execLeave.status_type}${periodStr} ]</span>${remarkText}
-        </td>
-        <td class="no-export text-center" style="width: 50px;">
-          <button class="btn btn-sm btn-outline-danger py-0 px-1" title="ยกเลิกสถานะ" onclick="clearLeaveConfirm('${execLeave.leave_id}')"><i class="fa-solid fa-circle-xmark"></i></button>
-        </td>
-      `;
+              <td style="width: 25%; background-color: #ffffff !important; border: 1px solid #222 !important;">
+                <div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div>
+              </td>
+              <td style="width: 68%; background-color: #ffffff !important; border: 1px solid #222 !important;">
+                <span class="leave-badge"><i class="fa-solid fa-user-clock me-1"></i> [ ${execLeave.status_type}${periodStr} ]</span>
+                <span class="ms-2 fw-bold text-muted">${remarkText}</span>
+              </td>
+              <td class="no-export text-center" style="width: 7%; background-color: #ffffff !important; border: 1px solid #222 !important;">
+                <button class="btn btn-sm btn-outline-danger py-0 px-1" onclick="clearLeaveConfirm('${execLeave.leave_id}')"><i class="fa-solid fa-circle-xmark"></i></button>
+              </td>
+            `;
             leaveTbody.appendChild(tr);
           }
 
-          // Render ตารางภารกิจหลัก
-          const isFullDayLeave =
-            execLeave && (execLeave.period === "เต็มวัน" || !execLeave.period);
-
+          // Render: Main Event Table
           if (!isFullDayLeave) {
             if (execEvents.length === 0) {
               const tr = document.createElement("tr");
               tr.innerHTML = `
-          <td><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>
-          <td class="text-center">-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td class="no-export text-center"></td>
-        `;
+                <td style="background-color: #ffffff !important; border: 1px solid #222 !important; vertical-align: top !important;">
+                  <div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div>
+                </td>
+                <td style="background-color: #ffffff !important; border: 1px solid #222 !important; vertical-align: middle !important;">
+                  <span class="text-muted" style="font-size: 11px;">- ไม่มีภารกิจ -</span>
+                </td>
+                <td class="no-export text-center" style="background-color: #ffffff !important; border: 1px solid #222 !important;"></td>
+              `;
               tbody.appendChild(tr);
             } else {
               execEvents.forEach((ev, idx) => {
                 const tr = document.createElement("tr");
+                const taskBgColor =
+                  idx % 2 === 0
+                    ? "background-color: #ffffff !important;"
+                    : "background-color: #f8fafc !important;";
+                const taskBorderTop =
+                  idx === 0
+                    ? "border-top: 1px solid #222 !important;"
+                    : "border-top: none !important;";
+                const taskBorderBottom =
+                  idx < execEvents.length - 1
+                    ? "border-bottom: 1px dashed #a0aec0 !important;"
+                    : "border-bottom: 1px solid #222 !important;";
+                const taskBorderStyle = `${taskBorderTop} ${taskBorderBottom} border-left: 1px solid #222 !important; border-right: 1px solid #222 !important;`;
+
                 let nameTd = "";
                 if (idx === 0) {
-                  nameTd = `<td rowspan="${execEvents.length}"><div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div></td>`;
+                  nameTd = `
+                    <td rowspan="${execEvents.length}" style="background-color: #ffffff !important; border: 1px solid #222 !important; vertical-align: top !important;">
+                      <div class="exec-name">${exec.name}</div><div class="exec-pos">${exec.position}</div>
+                    </td>
+                  `;
                 }
 
                 const timeDisplay = cleanTimeDisplay(ev.start_time);
-                const dressRemark = [ev.dress_code, ev.remark]
-                  .filter(Boolean)
-                  .join(" / ");
-
-                const jointExecNames = appData.executives
-                  .filter(
-                    (e) =>
-                      (ev.assigned_exec_ids || []).some(
-                        (id) => normId(id) === normId(e.exec_id),
-                      ) && normId(e.exec_id) !== normId(exec.exec_id),
-                  )
-                  .map((e) => e.name);
-
-                let jointBadge = "";
-                if (jointExecNames.length > 0) {
-                  jointBadge = `<div class="joint-exec-badge"><i class="fa-solid fa-users me-1"></i>ไปร่วมกับ: ${jointExecNames.join(", ")}</div>`;
-                }
+                const dressText = ev.dress_code
+                  ? `<span class="text-secondary ms-2"><i class="fa-solid fa-shirt"></i> ${ev.dress_code}</span>`
+                  : "";
+                const locText = ev.location
+                  ? `<span class="text-secondary ms-2"><i class="fa-solid fa-location-dot"></i> ${ev.location}</span>`
+                  : "";
+                const remarkText = ev.remark
+                  ? `<span class="text-danger ms-2">(*${ev.remark})</span>`
+                  : "";
 
                 tr.innerHTML = `
-            ${nameTd}
-            <td class="text-center fw-bold">${timeDisplay}</td>
-            <td>
-              <div>${ev.title}</div>
-              ${jointBadge}
-            </td>
-            <td>${ev.location || "-"}</td>
-            <td>${dressRemark || "-"}</td>
-            <td class="no-export text-center">
-              <button class="btn btn-sm btn-outline-warning py-0 px-1 me-1" onclick="editEvent('${ev.event_id}')"><i class="fa-solid fa-pen"></i></button>
-              <button class="btn btn-sm btn-outline-danger py-0 px-1" onclick="deleteEventConfirm('${ev.event_id}')"><i class="fa-solid fa-trash"></i></button>
-            </td>
-          `;
+                  ${nameTd}
+                  <td style="${taskBorderStyle} ${taskBgColor}">
+                    <span class="fw-bold text-primary" style="font-size: 13.5px;">${timeDisplay}</span> 
+                    <span class="fw-bold text-dark ms-1" style="font-size: 12.5px;">${ev.title}</span>
+                    <div style="font-size: 11px; margin-top: 2px;">${locText} ${dressText} ${remarkText}</div>
+                  </td>
+                  <td class="no-export text-center" style="${taskBorderStyle} ${taskBgColor}">
+                    <button class="btn btn-sm btn-outline-warning py-0 px-1 me-1 mb-1" onclick="editEvent('${ev.event_id}')"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-sm btn-outline-danger py-0 px-1 mb-1" onclick="deleteEventConfirm('${ev.event_id}')"><i class="fa-solid fa-trash"></i></button>
+                  </td>
+                `;
                 tbody.appendChild(tr);
               });
             }
@@ -910,7 +958,7 @@
           try {
             const res = await fetch(
               `${GAS_API_URL}?action=verifyAdmin&password=${password}`,
-              { method: "GET", redirect: "follow" },
+              { method: "GET" },
             );
             const data = await res.json();
             if (data.success) {
@@ -962,21 +1010,17 @@
           container.innerHTML = `<div class="text-danger p-2">ไม่พบรายชื่อผู้บริหาร</div>`;
           return;
         }
-
         const normSelected = selectedIds.map((id) => normId(id));
-
         container.innerHTML = appData.executives
           .map(
             (exec) => `
-        <div class="col-12 col-md-6">
-          <div class="form-check">
-            <input class="form-check-input exec-cb" type="checkbox" value="${exec.exec_id}" id="cb-${exec.exec_id}" ${normSelected.includes(normId(exec.exec_id)) ? "checked" : ""}>
-            <label class="form-check-label" for="cb-${exec.exec_id}">
-              <strong>${exec.name}</strong> <small class="text-muted">(${exec.position})</small>
-            </label>
+          <div class="col-12 col-md-6">
+            <div class="form-check">
+              <input class="form-check-input exec-cb" type="checkbox" value="${exec.exec_id}" id="cb-${exec.exec_id}" ${normSelected.includes(normId(exec.exec_id)) ? "checked" : ""}>
+              <label class="form-check-label" for="cb-${exec.exec_id}"><strong>${exec.name}</strong> <small class="text-muted">(${exec.position})</small></label>
+            </div>
           </div>
-        </div>
-      `,
+        `,
           )
           .join("");
       }
@@ -990,13 +1034,12 @@
         document.getElementById("event-id").value = ev.event_id;
         document.getElementById("event-date").value = ev.event_date;
 
-        // แปลงเวลา 24 ชม. กลับเข้าช่อง Dropdown ชั่วโมง/นาที
         if (ev.start_time) {
-          const cleanT = ev.start_time
+          const parts = ev.start_time
             .replace(" น.", "")
             .replace(".", ":")
-            .trim();
-          const parts = cleanT.split(":");
+            .trim()
+            .split(":");
           if (parts.length >= 2) {
             document.getElementById("start-time-hour").value =
               parts[0].padStart(2, "0");
@@ -1020,48 +1063,41 @@
       async function submitEventForm() {
         clearValidationErrors();
         let isValid = true;
-
         const selectedExecs = Array.from(
           document.querySelectorAll(".exec-cb:checked"),
         ).map((cb) => cb.value);
+
         if (selectedExecs.length === 0) {
           document
             .getElementById("executives-checkbox-group")
             .classList.add("is-invalid");
           isValid = false;
         }
-
         const dateEl = document.getElementById("event-date");
         if (!dateEl.value) {
           dateEl.classList.add("is-invalid");
           isValid = false;
         }
-
         const hourEl = document.getElementById("start-time-hour");
         const minEl = document.getElementById("start-time-minute");
         if (!hourEl.value) {
           hourEl.classList.add("is-invalid");
           isValid = false;
         }
-
         const titleEl = document.getElementById("event-title");
         if (!titleEl.value.trim()) {
           titleEl.classList.add("is-invalid");
           isValid = false;
         }
 
-        if (!isValid) {
-          Swal.fire(
+        if (!isValid)
+          return Swal.fire(
             "เตือน",
             "กรุณากรอกข้อมูลในช่องที่จำเป็นให้ครบถ้วน",
             "warning",
           );
-          return;
-        }
 
-        // รวมค่าเวลา 24 ชม. เป็นฟอร์แมต "HH.MM น."
         const formattedTime = `${hourEl.value}.${minEl.value || "00"} น.`;
-
         const payload = {
           action: "saveEvent",
           password: currentAdminPass,
@@ -1091,11 +1127,9 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
           });
-
-          const modalEl = document.getElementById("eventModal");
-          const modalObj = bootstrap.Modal.getInstance(modalEl);
-          if (modalObj) modalObj.hide();
-
+          bootstrap.Modal.getInstance(
+            document.getElementById("eventModal"),
+          )?.hide();
           setTimeout(() => {
             Swal.fire("สำเร็จ", "บันทึกข้อมูลเรียบร้อยแล้ว", "success");
             loadSchedule();
@@ -1104,6 +1138,7 @@
           Swal.fire("ข้อผิดพลาด", "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้", "error");
         }
       }
+
       async function submitLeaveForm() {
         clearValidationErrors();
         let isValid = true;
@@ -1113,33 +1148,28 @@
           execEl.classList.add("is-invalid");
           isValid = false;
         }
-
         const dateEl = document.getElementById("leave-date");
         if (!dateEl.value) {
           dateEl.classList.add("is-invalid");
           isValid = false;
         }
-
         const typeEl = document.getElementById("leave-type");
         if (!typeEl.value) {
           typeEl.classList.add("is-invalid");
           isValid = false;
         }
-
         const periodEl = document.getElementById("leave-period");
         if (!periodEl.value) {
           periodEl.classList.add("is-invalid");
           isValid = false;
         }
 
-        if (!isValid) {
-          Swal.fire(
+        if (!isValid)
+          return Swal.fire(
             "เตือน",
             "กรุณากรอกข้อมูลในช่องที่จำเป็นให้ครบถ้วน",
             "warning",
           );
-          return;
-        }
 
         const payload = {
           action: "saveLeaveStatus",
@@ -1166,11 +1196,9 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
           });
-
-          const modalEl = document.getElementById("leaveModal");
-          const modalObj = bootstrap.Modal.getInstance(modalEl);
-          if (modalObj) modalObj.hide();
-
+          bootstrap.Modal.getInstance(
+            document.getElementById("leaveModal"),
+          )?.hide();
           setTimeout(() => {
             Swal.fire("สำเร็จ", "บันทึกสถานะการลาเรียบร้อย", "success");
             loadSchedule();
@@ -1233,106 +1261,81 @@
         }
       }
 
+      /* ================= Export Functions ================= */
       function exportImage169() {
         updateDownloadTimestamp();
-        const srcElement = document.getElementById("schedule-table-container");
         Swal.fire({
           title: "กำลังสร้างไฟล์รูปภาพ...",
           didOpen: () => Swal.showLoading(),
         });
-
         document
           .querySelectorAll(".no-export")
           .forEach((el) => (el.style.display = "none"));
 
-        const devCreditEl = document.getElementById("footer-dev-credit");
-        if (devCreditEl && !devCreditEl.innerText) {
-          devCreditEl.innerText =
-            appData.devCredit ||
-            "พัฒนาระบบโดย: งานโสตทัศนูปกรณ์ กลุ่มงานพัฒนายุทธศาสตร์สาธารณสุข สสจ.ลพบุรี";
-        }
-
-        const clone = srcElement.cloneNode(true);
-
+        const clone = document
+          .getElementById("schedule-table-container")
+          .cloneNode(true);
         const wrap = document.createElement("div");
-        wrap.style.position = "absolute";
-        wrap.style.left = "-9999px";
-        wrap.style.top = "-9999px";
-        wrap.style.width = "1050px";
-        wrap.style.backgroundColor = "#ffffff";
-        wrap.style.padding = "12px";
-        wrap.style.boxSizing = "border-box";
-
+        wrap.style.cssText =
+          "position:absolute; left:-9999px; top:-9999px; width:1050px; background-color:#ffffff; padding:16px; box-sizing:border-box;";
         wrap.appendChild(clone);
         document.body.appendChild(wrap);
 
-        html2canvas(wrap, {
-          scale: 2,
-          useCORS: true,
-          logging: false,
-        }).then((canvas) => {
-          const link = document.createElement("a");
-          link.download = `ตารางงานผู้บริหาร_${document.getElementById("search-date").value}.png`;
-          link.href = canvas.toDataURL("image/png", 1.0);
-          link.click();
-
-          document.body.removeChild(wrap);
-          document
-            .querySelectorAll(".no-export")
-            .forEach((el) => (el.style.display = ""));
-          Swal.close();
-        });
+        html2canvas(wrap, { scale: 2, useCORS: true, logging: false }).then(
+          (canvas) => {
+            const link = document.createElement("a");
+            link.download = `ตารางงานผู้บริหาร_${document.getElementById("search-date").value}.png`;
+            link.href = canvas.toDataURL("image/png", 1.0);
+            link.click();
+            document.body.removeChild(wrap);
+            document
+              .querySelectorAll(".no-export")
+              .forEach((el) => (el.style.display = ""));
+            Swal.close();
+          },
+        );
       }
 
       function exportPDF() {
         updateDownloadTimestamp();
-        const { jsPDF } = window.jspdf;
-        const srcElement = document.getElementById("schedule-table-container");
         document
           .querySelectorAll(".no-export")
           .forEach((el) => (el.style.display = "none"));
 
-        const devCreditEl = document.getElementById("footer-dev-credit");
-        if (devCreditEl && !devCreditEl.innerText) {
-          devCreditEl.innerText =
-            appData.devCredit ||
-            "พัฒนาระบบโดย: งานโสตทัศนูปกรณ์ กลุ่มงานพัฒนายุทธศาสตร์สาธารณสุข สสจ.ลพบุรี";
-        }
-
-        const clone = srcElement.cloneNode(true);
-
+        const clone = document
+          .getElementById("schedule-table-container")
+          .cloneNode(true);
         const wrap = document.createElement("div");
-        wrap.style.position = "absolute";
-        wrap.style.left = "-9999px";
-        wrap.style.top = "-9999px";
-        wrap.style.width = "1000px";
-        wrap.style.backgroundColor = "#ffffff";
-        wrap.style.padding = "10px";
-        wrap.style.boxSizing = "border-box";
-
+        wrap.style.cssText =
+          "position:absolute; left:-9999px; top:-9999px; width:1100px; background-color:#ffffff; padding:16px; box-sizing:border-box;";
         wrap.appendChild(clone);
         document.body.appendChild(wrap);
 
-        html2canvas(wrap, { scale: 2.2 }).then((canvas) => {
+        html2canvas(wrap, { scale: 2.2, useCORS: true }).then((canvas) => {
+          const { jsPDF } = window.jspdf;
           const imgData = canvas.toDataURL("image/png");
           const pdf = new jsPDF("p", "mm", "a4");
           const pdfWidth = 200;
-          const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+          let pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-          const maxHeight = 282;
-          let finalWidth = pdfWidth;
-          let finalHeight = pdfHeight;
-          if (pdfHeight > maxHeight) {
-            finalHeight = maxHeight;
-            finalWidth = (canvas.width * finalHeight) / canvas.height;
+          if (pdfHeight > 282) {
+            pdfHeight = 282;
+            const finalWidth = (canvas.width * pdfHeight) / canvas.height;
+            pdf.addImage(
+              imgData,
+              "PNG",
+              (210 - finalWidth) / 2,
+              4,
+              finalWidth,
+              pdfHeight,
+            );
+          } else {
+            pdf.addImage(imgData, "PNG", 5, 4, pdfWidth, pdfHeight);
           }
 
-          const xOffset = (210 - finalWidth) / 2;
-          pdf.addImage(imgData, "PNG", xOffset, 4, finalWidth, finalHeight);
           pdf.save(
             `ตารางงานผู้บริหาร_${document.getElementById("search-date").value}.pdf`,
           );
-
           document.body.removeChild(wrap);
           document
             .querySelectorAll(".no-export")
